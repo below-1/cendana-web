@@ -1,5 +1,8 @@
 import { ref, Ref, reactive, watch, onMounted } from 'vue';
+import { useQuasar } from 'quasar';
 import { api } from 'boot/axios';
+
+const FAILURE_MESSAGE = 'Gagal mengambil data';
 
 export interface ListLoading {
   type: 'loading';
@@ -40,6 +43,7 @@ export function useListEntity<T>(options: ListEntityOptions) {
   const result: Ref<Result> = ref({
     type: 'loading'
   } as ListLoading);
+  const $q = useQuasar();
 
   async function getEntityList() {
     result.value = { type: 'loading' };
@@ -52,6 +56,12 @@ export function useListEntity<T>(options: ListEntityOptions) {
       };
       result.value = wrappedData;
     } catch (err) {
+      console.log(err);
+      $q.notify({
+        type: 'negative',
+        message: `${FAILURE_MESSAGE} ${options.name}`,
+        closeBtn: true
+      })
       result.value = { type: 'error', error: err };
     }
   }
