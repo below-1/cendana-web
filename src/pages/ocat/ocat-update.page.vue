@@ -1,3 +1,4 @@
+
 <template>
   <q-page>
     <q-toolbar class="text-grey-8 bg-grey-2">
@@ -37,7 +38,7 @@ import {
 import { useSingleEntity, useUpdateEntity } from 'src/compose/entity';
 import AsyncForm from 'components/async-form.vue';
 import LoadingPane from 'components/loading-pane.vue';
-import { UPDATE_FIELDS, ENTITY_NAME, BASE_API_URL } from 'src/data/pcat';
+import { UPDATE_FIELDS, ENTITY_NAME, BASE_API_URL } from 'src/data/ocat';
 
 export default defineComponent({
   components: {

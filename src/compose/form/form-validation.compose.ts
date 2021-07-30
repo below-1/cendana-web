@@ -8,7 +8,7 @@ export default function formValidation(form: Ref<unknown>, payload: any) {
     if (!formVal) {
       return false;
     }
-    formValid.value = await (formVal as any).validate(true);
+    formValid.value = await (formVal as any).validate(false);
     return true;
   }
 

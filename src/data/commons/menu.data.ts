@@ -6,7 +6,7 @@ export const baseMenus: Menu[] = [
   { path: '/app', label: 'dashboard', icon: 'dashboard' },
   { separator: true, label: 'master' },
   { path: '/app/pcat', label: 'kategori barang', icon: 'category' },
-  { path: '/app/opex-category', label: 'kategori beban operasi', icon: 'category' },
+  { path: '/app/ocat', label: 'kategori beban operasi', icon: 'category' },
   { path: '/app/product', label: 'gudang', icon: 'bento' },
   { separator: true, label: 'transaksi' },
   { path: '/app/purchase', label: 'pembelian', icon: 'point_of_sale' },

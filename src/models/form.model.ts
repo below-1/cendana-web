@@ -15,6 +15,18 @@ export interface StringDescriptor extends BaseFormDescriptor {
   control: 'string';
 }
 
+export interface DateDescriptor extends BaseFormDescriptor {
+  control: 'date';
+}
+
+export interface TimeDescriptor extends BaseFormDescriptor {
+  control: 'date';
+}
+
+export interface DateTimeDescriptor extends BaseFormDescriptor {
+  control: 'datetime';
+}
+
 export interface TextAreaDescriptor extends BaseFormDescriptor {
   control: 'textarea';
 }
@@ -33,8 +45,12 @@ export interface SelectItem {
 
 export interface StaticSelectDescriptor extends BaseFormDescriptor {
   control: 'select',
-  options: SelectItem[];
+}
+
+export interface DynamicSelectDescriptor extends BaseFormDescriptor {
+  control: 'dynamic-select';
 }
 
 export type FormDescriptor = StringDescriptor | TextAreaDescriptor |
-  NumberDescriptor | StaticSelectDescriptor;
+  NumberDescriptor | StaticSelectDescriptor | DynamicSelectDescriptor | 
+  DateDescriptor | TimeDescriptor | DateTimeDescriptor;

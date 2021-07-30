@@ -13,6 +13,7 @@
     ref="form">
     <DynamicForm
       :items="fields"
+      :options="options"
       v-model="payload"
     />
     <q-btn 
@@ -55,6 +56,10 @@ export default defineComponent({
     fields: {
       type: Array as PropType<FormDescriptor[]>,
       required: true,
+    },
+    options: {
+      type: Object as PropType<any>,
+      default: {}
     },
     loading: {
       type: Boolean as PropType<boolean>,

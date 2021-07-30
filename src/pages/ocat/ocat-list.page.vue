@@ -73,7 +73,7 @@ import {
   BASE_APP_URL,
   BASE_API_URL,
   COLUMNS
-} from 'src/data/pcat';
+} from 'src/data/ocat';
 
 export default defineComponent({
   components: {

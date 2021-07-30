@@ -14,6 +14,7 @@
               :fields="FIELDS"
               :initial="initial"
               :loading="loading"
+              :options="options"
               @submit="onSubmit"
             />
           </q-card-section>
@@ -25,9 +26,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
-import { CREATE_FIELDS, ENTITY_NAME, BASE_API_URL } from 'src/data/pcat';
+import { defineComponent, computed, onMounted, Ref, reactive } from 'vue';
+import { CREATE_FIELDS, ENTITY_NAME, BASE_API_URL } from 'src/data/product';
+import * as ProductCategoryData from 'src/data/pcat';
 import { useCreateEntity } from 'src/compose/entity';
+import { getOptionsEntity } from 'src/serv/entity/options-entity.serv';
 import AsyncForm from 'components/async-form.vue';
 import { useRouter } from 'vue-router';
 
@@ -36,7 +39,11 @@ export default defineComponent({
     AsyncForm,
   },
   setup() {
-    const initial = { title: '' };
+    const initial = { 
+      name: '',
+      unit: '',
+      categories: []
+    };
     const { createEntity, result: createResult } = useCreateEntity(ENTITY_NAME);
     const loading = computed(() => createResult.value.type == 'loading');
     const $router = useRouter();
@@ -46,10 +53,24 @@ export default defineComponent({
           $router.back();
         });
     };
+    const options: any = reactive({
+      categories: []
+    });
+
+    onMounted(() => {
+      getOptionsEntity(ProductCategoryData.BASE_API_URL)
+        .then(opts => {
+          options.categories = opts;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    })
 
     return {
       ENTITY_NAME,
       FIELDS: CREATE_FIELDS,
+      options,
       initial,
       onSubmit,
       loading,

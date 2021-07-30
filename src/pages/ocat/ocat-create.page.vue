@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import { defineComponent, computed } from 'vue';
-import { CREATE_FIELDS, ENTITY_NAME, BASE_API_URL } from 'src/data/pcat';
+import { CREATE_FIELDS, ENTITY_NAME, BASE_API_URL } from 'src/data/ocat';
 import { useCreateEntity } from 'src/compose/entity';
 import AsyncForm from 'components/async-form.vue';
 import { useRouter } from 'vue-router';
