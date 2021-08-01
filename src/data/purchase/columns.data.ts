@@ -27,4 +27,10 @@ export const COLUMNS = [
     label: 'id',
     required: true,
   },
+  {
+    name: 'actions',
+    align: 'right',
+    field: 'id',
+    label: '',
+  },
 ];

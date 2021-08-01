@@ -19,6 +19,7 @@ const routes: RouteRecordRaw[] = [
       { path: 'product', component: () => import('pages/product/product-list.page.vue') },
       { path: 'product/create', component: () => import('pages/product/product-create.page.vue') },
       { path: 'product/:id/update', component: () => import('pages/product/product-update.page.vue'), props: true },
+      { path: 'purchase', component: () => import('pages/purchase/purchase-list.page.vue') },
       { path: 'purchase/create', component: () => import('pages/purchase/purchase-create.page.vue') },
     ]
   },
