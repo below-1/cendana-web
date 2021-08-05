@@ -5,7 +5,7 @@
 
 <script lang="ts">
 import { defineComponent, provide } from 'vue';
-import useMe from 'src/compose/auth/me.compose';
+import { useMe } from 'src/compose/auth';
 import LoadingLayout from './loading.layout.vue';
 import AppLayout from './app.layout.vue';
 

@@ -11,7 +11,7 @@ export type LoginResponse = {
   token: string;
 };
 
-export default function() {
+export function useLogin() {
   const loading = ref(false);
   const error: Ref<string | null> = ref(null);
 

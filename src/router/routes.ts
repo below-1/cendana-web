@@ -4,7 +4,10 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('layouts/auth.layout.vue'),
-    children: [{ path: 'login', component: () => import('pages/auth/login.page.vue') }],
+    children: [
+      { path: 'login', component: () => import('pages/auth/login.page.vue') },
+      { path: 'register', component: () => import('pages/auth/register.page.vue') }
+    ],
   },
   {
     path: '/app',
@@ -21,6 +24,17 @@ const routes: RouteRecordRaw[] = [
       { path: 'product/:id/update', component: () => import('pages/product/product-update.page.vue'), props: true },
       { path: 'purchase', component: () => import('pages/purchase/purchase-list.page.vue') },
       { path: 'purchase/create', component: () => import('pages/purchase/purchase-create.page.vue') },
+      { path: 'purchase/:id/detail', component: () => import('pages/purchase/purchase-detail.page.vue'), props: true },
+      { 
+        path: 'stock-items/order/:order',
+        component: () => import('pages/sitem/sitem-order.page.vue'),
+        props: true
+      },
+      { 
+        path: 'stock-items/order/:order/add',
+        component: () => import('pages/sitem/sitem-add.page.vue'),
+        props: true
+      }
     ]
   },
 

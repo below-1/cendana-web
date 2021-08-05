@@ -43,7 +43,7 @@
     </q-header>
 
     <q-drawer
-      v-model="leftDrawerOpen"
+      :mini="leftDrawerMini"
       dark
       show-if-above
       bordered
@@ -76,12 +76,14 @@ export default defineComponent({
 
   setup() {
     const leftDrawerOpen = ref(false);
+    const leftDrawerMini = ref(false);
     const user = inject<User>('user');
 
     return {
       leftDrawerOpen,
+      leftDrawerMini,
       toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
+        leftDrawerMini.value = !leftDrawerMini.value;
       },
       adminMenus,
       baseMenus,

@@ -2,7 +2,7 @@ import { ref, Ref, onMounted } from 'vue';
 import { api } from 'boot/axios';
 import { User } from 'src/models/user.model';
 
-export default function useMe() {
+export function useMe() {
   const error: Ref<string | null> = ref(null);
   const me: Ref<User | null> = ref(null);
 

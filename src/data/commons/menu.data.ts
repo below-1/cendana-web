@@ -8,6 +8,8 @@ export const baseMenus: Menu[] = [
   { path: '/app/pcat', label: 'kategori barang', icon: 'category' },
   { path: '/app/ocat', label: 'kategori beban operasi', icon: 'category' },
   { path: '/app/product', label: 'gudang', icon: 'bento' },
+  { path: '/app/supplier', label: 'supplier', icon: 'bento' },
+  { path: '/app/pelanggan', label: 'pelanggan', icon: 'bento' },
   { separator: true, label: 'transaksi' },
   { path: '/app/purchase', label: 'pembelian', icon: 'point_of_sale' },
   { path: '/app/sales', label: 'penjualan', icon: 'point_of_sale' },

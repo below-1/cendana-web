@@ -10,6 +10,19 @@
           dark
           standout
           square
+          v-model="payload.name"
+          label="Nama"
+          :rules="[
+            v => !!v || 'nama harus diisi'
+          ]"
+          class="q-mb-sm"
+        />
+
+        <q-input
+          flat
+          dark
+          standout
+          square
           v-model="payload.username"
           label="Username"
           :rules="[
@@ -32,15 +45,9 @@
           class="q-mb-sm"
         />
 
-        <div 
-          v-if="loginError"
-          class="full-width bg-red-8 text-white q-pa-lg q-my-md text-center">
-          <div class="text-subtitle2">{{ loginError }}</div>
-        </div>
-
         <q-btn
           :loading="loading"
-          :disabled="formInvalid"
+          :disabled="!formInvalid"
           unelevated
           dark
           color="blue-9"
@@ -53,14 +60,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, Ref, watch, } from 'vue'
-import { useRouter } from 'vue-router'
-import * as data from 'src/data/commons/app.data'
-import { useLogin } from 'src/compose/auth'
+import { defineComponent, reactive, ref, Ref, watch, } from 'vue';
+import { useRouter } from 'vue-router';
+import * as data from 'src/data/commons/app.data';
+import { useRegister } from 'src/compose/auth'
 
 export default defineComponent({
   setup() {
     const payload = reactive({
+      name: '',
       username: '',
       password: '',
     });
@@ -78,29 +86,18 @@ export default defineComponent({
 
     watch(payload, async () => {
       formInvalid.value = await validateForm();
-    });
+    })
 
-    const {
-      loading,
-      doLogin,
-      error: loginError,
-    } = useLogin();
-    const router = useRouter();
+    const { register, loading } = useRegister()
 
     async function onSubmit() {
-      const isFormInvalid = await validateForm();
+      const isFormInvalid = await validateForm()
       // Quasar input rules return true when there is error
       if (!isFormInvalid) {
-        return;
+        return
       }
-      const formData = { ...payload };
-      doLogin(formData)
-        .then(() => {
-          router.push('/app');
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      const formData = { ...payload }
+      register(formData)
     }
 
     return {
@@ -109,9 +106,7 @@ export default defineComponent({
       form,
       formInvalid,
       onSubmit,
-      loading,
-      loginError,
-      doLogin,
+      loading
     };
   },
 });

@@ -35,6 +35,13 @@
         <template v-slot:body-cell-actions="props">
           <q-td :props="props">
             <q-btn
+              icon="details"
+              color="teal"
+              flat 
+              size="sm"
+              :to="`/app/purchase/${props.row.id}/detail`"
+            />
+            <q-btn
               icon="delete"
               color="red"
               flat 
@@ -45,6 +52,7 @@
               flat 
               size="sm"
               label="daftar item"
+              :to="`/app/stock-items/order/${props.row.id}`"
             />
           </q-td>
         </template>
