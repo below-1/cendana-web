@@ -46,9 +46,7 @@
           style="min-width: 200px;"/>
         <q-input
           :model-value="params.page + 1"
-          @update:model-value="v => {
-            params.page = v - 1;
-          }"
+          @update:model-value="onPageChange"
           :shadow-text="`/${listResult.totalPage}`"
           :suffix="`/${listResult.totalPage}`"
           type="number"
@@ -57,7 +55,7 @@
           label="halaman"
           dense
           outlined
-          style="max-width: 100px;"/>
+          style="min-width: 100px;"/>
       </q-toolbar>
     </section>
 
@@ -106,6 +104,13 @@ export default defineComponent({
     }
 
     const showLoading = computed(() => listResult.value.type == 'loading' || removeResult.value.type == 'loading');
+    
+    const onPageChange = (v: any) => {
+      if (!v || isNaN(v)) {
+        return
+      }
+      params.page = v - 1
+    }
 
     return {
       COLUMNS,
@@ -116,6 +121,7 @@ export default defineComponent({
       generateUpdateURL,
       onRemove,
       showLoading,
+      onPageChange
     };
   },
 });
