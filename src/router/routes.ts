@@ -19,12 +19,21 @@ const routes: RouteRecordRaw[] = [
       { path: 'ocat', component: () => import('pages/ocat/ocat-list.page.vue') },
       { path: 'ocat/create', component: () => import('pages/ocat/ocat-create.page.vue') },
       { path: 'ocat/:id/update', component: () => import('pages/ocat/ocat-update.page.vue'), props: true },
+      { path: 'supplier', component: () => import('pages/supplier/supplier-list.page.vue') },
       { path: 'product', component: () => import('pages/product/product-list.page.vue') },
       { path: 'product/create', component: () => import('pages/product/product-create.page.vue') },
       { path: 'product/:id/update', component: () => import('pages/product/product-update.page.vue'), props: true },
       { path: 'purchase', component: () => import('pages/purchase/purchase-list.page.vue') },
       { path: 'purchase/create', component: () => import('pages/purchase/purchase-create.page.vue') },
-      { path: 'purchase/:id/detail', component: () => import('pages/purchase/purchase-detail.page.vue'), props: true },
+      { 
+        path: 'purchase/:id/detail', 
+        component: () => import('pages/purchase/purchase-detail.page.vue'), 
+        props: true,
+        children: [
+          { path: 'update', component: () => import('pages/purchase/purchase-update.page.vue'), props: true },
+          { path: 'seal', component: () => import('pages/purchase/purchase-seal.page.vue'), props: true },
+        ]
+      },
       { 
         path: 'stock-items/order/:order',
         component: () => import('pages/sitem/sitem-order.page.vue'),

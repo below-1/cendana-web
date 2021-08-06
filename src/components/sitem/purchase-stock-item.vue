@@ -2,12 +2,12 @@
   <loading-pane v-if="stockItems.type == 'loading'" />
   <q-card v-else flat bordered>
     <q-toolbar class="q-px-lg bg-grey-2">
-      <q-toolbar-title class="text-weight-bold">
+      <q-toolbar-title>
         Data Item Pembelian
       </q-toolbar-title>
       <q-btn
         v-if="open"
-        flat 
+        outline
         color="primary" 
         label="tambah" 
         icon="add" 
@@ -38,7 +38,7 @@
             color="red"
             flat 
             size="sm"
-            @click="onRemove(props.row)"
+            @click="onRemove(props.row.id)"
           />
         </q-td>
       </template>
@@ -129,6 +129,10 @@ export default defineComponent({
       promptRemove
     } = useRemoveEntity('Item Pembelian')
 
+    const onRemove = (id: any) => {
+      promptRemove(`/v1/api/stock-items/${id}`, id)
+    }
+
     onMounted(() => {
       getStockItems()
     })
@@ -140,6 +144,7 @@ export default defineComponent({
       stockItems,
       removeResult,
       promptRemove,
+      onRemove,
       COLUMNS
     }
   }

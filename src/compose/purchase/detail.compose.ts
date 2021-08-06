@@ -28,6 +28,7 @@ export function useDetailPurchase(id: Ref<string | number>) {
     try {
       const response = await api.get(url)
       purchase.value = { type: 'data', item: response.data }
+      return purchase.value
     } catch (err) {
       console.log(err)
       $q.notify({

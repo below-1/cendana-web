@@ -6,6 +6,7 @@
     @keyup="onKeyUp"
     :label="label"
     :rules="rules"
+    :readonly="readonly"
     prefix="Rp, "
   />
 </template>
@@ -29,6 +30,10 @@ export default defineComponent({
     },
     label: {
       type: String as PropType<string>
+    },
+    readonly: {
+      type: Boolean as PropType<boolean>,
+      default: false
     },
     rules: {
       type: Array as PropType<any[]>,

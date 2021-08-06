@@ -1,25 +1,18 @@
 <template>
   <loading-pane v-if="purchase.type == 'loading'" />
-  <q-card v-else flat bordered>
-    <q-toolbar class="q-px-lg bg-grey-2">
-      <q-toolbar-title class="text-weight-bold">
-        Detail Pembelian #{{ purchase.item.id }}
-      </q-toolbar-title>
-    </q-toolbar>
-    <q-list separator>
-      <q-item
-        v-for="item in detailItems"
-        :key="item.label"
-      >
-        <q-item-section>
-          {{ item.label }}
-        </q-item-section>
-        <q-item-section>
-          {{ item.value }}
-        </q-item-section>
-      </q-item>
-    </q-list>
-  </q-card>
+  <q-list v-else separator>
+    <q-item
+      v-for="item in detailItems"
+      :key="item.label"
+    >
+      <q-item-section>
+        {{ item.label }}
+      </q-item-section>
+      <q-item-section>
+        {{ item.value }}
+      </q-item-section>
+    </q-item>
+  </q-list>
 </template>
 
 <script lang="ts">

@@ -37,7 +37,8 @@
                 filled
                 class="q-mb-md"
                 label="Jumlah Item Baik"
-                v-model="payload.available"
+                v-model.number="payload.available"
+                type="number"
                 :rules="[
                   v => !!v || 'Jumlah Item Baik Harus Diisi'
                 ]"
@@ -46,10 +47,8 @@
                 filled
                 class="q-mb-md"
                 label="Jumlah Item Rusak"
-                v-model="payload.defect"
-                :rules="[
-                  v => !!v || 'Jumlah Item Rusak Harus Diisi'
-                ]"
+                v-model.number="payload.defect"
+                type="number"
               />
               <q-input
                 filled
@@ -58,11 +57,7 @@
                 type="number"
                 min="0"
                 max="100"
-                step="0.1"
                 v-model.number="payload.discount"
-                :rules="[
-                  v => !!v || 'Diskon Harus Diisi'
-                ]"
               />
             </q-form>
           </q-card-section>
