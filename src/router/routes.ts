@@ -21,6 +21,7 @@ const routes: RouteRecordRaw[] = [
       { path: 'ocat/:id/update', component: () => import('pages/ocat/ocat-update.page.vue'), props: true },
       { path: 'supplier', component: () => import('pages/supplier/supplier-list.page.vue') },
       { path: 'supplier/create', component: () => import('pages/supplier/supplier-create.page.vue') },
+      { path: 'supplier/:id/update', component: () => import('pages/supplier/supplier-update.page.vue'), props: true },
       { path: 'product', component: () => import('pages/product/product-list.page.vue') },
       { path: 'product/create', component: () => import('pages/product/product-create.page.vue') },
       { path: 'product/:id/update', component: () => import('pages/product/product-update.page.vue'), props: true },
