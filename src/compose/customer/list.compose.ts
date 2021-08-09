@@ -1,6 +1,6 @@
 import { reactive, ref, Ref, watch } from 'vue'
 import { useQuasar } from 'quasar'
-import { api } from 'boot/axios'
+import { findCustomers } from 'src/serv/customer'
 
 export function useListCustomer() {
   const params = reactive({
@@ -22,8 +22,9 @@ export function useListCustomer() {
   const getCustomers = async () => {
     loading.value = true
     try {
-      const response = await api.get('/v1/api/users/customers', { params })
-      result.value = response.data
+      const data = await findCustomers(params)
+      result.value = data
+      return data
     } catch (err) {
       console.log(err)
       quasar.notify({

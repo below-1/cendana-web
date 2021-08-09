@@ -37,7 +37,7 @@ export default defineComponent({
 
     const model = computed({
       set: (selections: any) => {
-        emit('update:modelValue', selections.map(item => {
+        emit('update:modelValue', selections.map((item: any) => {
           return {
             ...item
           }

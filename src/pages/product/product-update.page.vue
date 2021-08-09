@@ -72,7 +72,7 @@ export default defineComponent({
     const { getSingleEntity, result: initialData } = useSingleEntity('Produk')
 
     onMounted(async () => {
-      const data = await getSingleEntity(url.value)
+      const data: any = await getSingleEntity(url.value)
       payload.name = data.name
       payload.unit = data.unit
       payload.sellPrice = data.sellPrice

@@ -40,6 +40,8 @@ const routes: RouteRecordRaw[] = [
           { path: 'seal', component: () => import('pages/purchase/purchase-seal.page.vue'), props: true },
         ]
       },
+      { path: 'sale', component: () => import('pages/sale/sale-list.page.vue') },
+      { path: 'sale/create', component: () => import('pages/sale/sale-create.page.vue') },
       { 
         path: 'stock-items/order/:order',
         component: () => import('pages/sitem/sitem-order.page.vue'),
