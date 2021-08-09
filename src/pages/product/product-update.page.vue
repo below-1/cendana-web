@@ -1,29 +1,32 @@
 <template>
   <q-page>
-    <q-toolbar class="text-grey-8 bg-grey-2">
+    <q-toolbar class="text-grey-8 bg-grey-2 q-px-lg">
       <q-toolbar-title class="text-weight-bold">
-        Update Data {{ ENTITY_NAME }}
+        Update Data Produk
       </q-toolbar-title>
     </q-toolbar>
-
-    <loading-pane v-if="loading" />
-
-    <div v-else class="row flex-center q-my-xl">
+    <div class="row flex-center q-my-xl">
       <div class="col-md-6 col-xs-12">
-        <q-card class="rounded-borders">
-          <q-card-section>
-            <async-form
-              :fields="FIELDS"
-              :loading="loading"
-              :initial="initial"
-              :options="options"
-              @submit="onSubmit"
-            />
+        <q-card class="rounded-borders" flat bordered>
+          <q-card-section v-if="initialData.type != 'loading'">
+            <q-form ref="form">
+              <q-input label="Nama Produk" v-model="payload.name" class="q-mb-md" outlined />
+              <q-input label="Unit Produk" v-model="payload.unit" class="q-mb-md" outlined />
+              <options-product-category v-model="payload.categories"/>
+            </q-form>
           </q-card-section>
+          <q-separator />
+          <div class="q-ma-md">
+            <q-btn 
+              @click="onSubmit"
+              :loading="updateResult.type == 'loading'"
+              color="blue"
+              dark
+              label="simpan" unelevated />
+          </div>
         </q-card>
       </div>
     </div>
-
   </q-page>
 </template>
 
@@ -34,98 +37,74 @@ import {
   PropType,
   onMounted,
   computed,
-  reactive
+  reactive,
+  ref,
+  Ref,
+  watch
 } from 'vue';
-import { useSingleEntity, useUpdateEntity } from 'src/compose/entity';
-import { getOptionsEntity } from 'src/serv/entity/options-entity.serv';
-import AsyncForm from 'components/async-form.vue';
-import LoadingPane from 'components/loading-pane.vue';
-import { UPDATE_FIELDS, ENTITY_NAME, BASE_API_URL } from 'src/data/product';
-import * as ProductCategoryData from 'src/data/pcat';
+import { useSingleEntity, useUpdateEntity } from 'src/compose/entity'
+import { useFindProductCategories } from 'src/compose/pcat'
+import OptionsProductCategory from 'components/pcat/options-product-category.vue'
 
 export default defineComponent({
-  components: {
-    AsyncForm,
-    LoadingPane,
-  },
   props: {
     id: {
       type: String as PropType<string>,
       required: true
-    },
+    }
+  },
+  components: {
+    OptionsProductCategory
   },
   setup(props) {
-    const { id } = toRefs(props);
-    const url = computed(() => `${BASE_API_URL}/${id.value}`);
+    const { id } = toRefs(props)
+    const payload = reactive({
+      name: '',
+      unit: '',
+      categories: [],
+      sellPrice: ''
+    })
 
-    const {
-      result: singleResult,
-      getSingleEntity
-    } = useSingleEntity(ENTITY_NAME);
-    const initial = computed(() => {
-      if (singleResult.value.type != 'result') {
-        return {
-          name: '',
-          unit: '',
-          categories: []
-        }
-      }
-      const _data = { ...(singleResult.value.data as any) };
-      const data = {
-        name: _data.name,
-        unit: _data.unit,
-        categories: _data.categories.map((c: any) => {
-          return {
-            value: c.id,
-            label: c.title
-          }
-        })
-      };
-      console.log(data);
-      return data;
-    });
+    const url = computed(() => {
+      const idVal = id.value
+      return idVal ? `/v1/api/products/${id.value}` : ''
+    })
+    const { getSingleEntity, result: initialData } = useSingleEntity('Produk')
+
+    onMounted(async () => {
+      const data = await getSingleEntity(url.value)
+      payload.name = data.name
+      payload.unit = data.unit
+      payload.sellPrice = data.sellPrice
+      payload.categories = data.categories
+    })
 
     const {
       result: updateResult,
       updateEntity
-    } = useUpdateEntity(ENTITY_NAME);
+    } = useUpdateEntity('Produk')
 
-
-    const loading = computed(() => singleResult.value.type == 'loading' || updateResult.value.type == 'loading');
-
-    const options: any = reactive({
-      categories: []
-    });
-
-    onMounted(() => {
-      getSingleEntity(url.value);
-      getOptionsEntity(ProductCategoryData.BASE_API_URL)
-        .then(opts => {
-          options.categories = opts;
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    });
-
-    function onSubmit(_payload: any) {
-      const payload = {
-        ..._payload,
-        categories: _payload.categories.map((it: any) => ({
-          id: it.value
-        }))
+    const form: Ref<any> = ref(null)
+    const onSubmit = async () => {
+      const formEl = form.value
+      if (!formEl) {
+        throw new Error(`form is undefind`)
       }
-      updateEntity(url.value, payload);
+      const isValid = await formEl.validate(true)
+      if (!isValid) {
+        return
+      }
+      const url = `/v1/api/products/${id.value}`
+      updateEntity(url, { ...payload })
     }
 
     return {
-      ENTITY_NAME,
-      FIELDS: UPDATE_FIELDS,
-      loading,
+      payload,
+      initialData,
+      form,
       onSubmit,
-      initial,
-      options,
-    };
-  },
-});
+      updateResult
+    }
+  }
+})
 </script>
