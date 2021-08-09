@@ -34,6 +34,7 @@
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
           <q-btn
+            v-if="open"
             icon="delete"
             color="red"
             flat 

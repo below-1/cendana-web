@@ -1,3 +1,5 @@
+import { rupiah } from 'src/serv/currency'
+
 export const COLUMNS = [
   {
     name: 'id',
@@ -18,6 +20,7 @@ export const COLUMNS = [
     align: 'left',
     field: 'buyPrice',
     label: 'Harga Beli',
+    format: (v: any) => rupiah(v),
     required: true,
   },
   {
@@ -25,6 +28,7 @@ export const COLUMNS = [
     align: 'left',
     field: 'sellPrice',
     label: 'Harga Jual',
+    format: (v: any) => rupiah(v),
     required: true,
   },
   {

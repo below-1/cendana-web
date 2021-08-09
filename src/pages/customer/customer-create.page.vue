@@ -3,7 +3,7 @@
     <q-toolbar class="bg-grey-2">
       <q-space/>
       <q-toolbar-title class="text-center">
-        Update Data Supplier #{{ id }}
+        Tambah Data Pelanggan
       </q-toolbar-title>
       <q-space/>
     </q-toolbar>
@@ -65,20 +65,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, onMounted, reactive, ref, Ref } from 'vue'
-import { useSingleEntity } from 'src/compose/entity'
-import { useUpdate } from 'src/compose/supplier'
-import { BASE_API_URL } from 'src/data/supplier'
+import { defineComponent, reactive, ref, Ref } from 'vue'
+import { useCreate } from 'src/compose/customer'
 
 export default defineComponent({
-  props: {
-    id: {
-      type: String as PropType<string>,
-      required: true
-    }
-  },
-  setup(props) {
-    const { getSingleEntity } = useSingleEntity('Supplier')
+  setup() {
     const payload = reactive({
       name: '',
       address: '',
@@ -86,21 +77,17 @@ export default defineComponent({
       email: ''
     })
 
-    onMounted(async () => {
-      const url = `${BASE_API_URL}/${props.id}`
-      const data: any = await getSingleEntity(url)
-      payload.name = data.name
-      payload.address = data.address
-      payload.mobile = data.mobile
-      payload.email = data.email
-    })
-
     const form: Ref<any> = ref(null)
-    const { loading, update } = useUpdate()
+
+    const {
+      loading,
+      create
+    } = useCreate()
+
     const onSubmit = async () => {
       const valid = await form.value.validate(true)
       if (!valid) return
-      update(props.id, payload)
+      create(payload)
     }
 
     return {
@@ -112,7 +99,3 @@ export default defineComponent({
   }
 })
 </script>
-
-<style>
-
-</style>

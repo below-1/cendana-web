@@ -37,7 +37,10 @@
           v-model.number="payload.discount"
           type="number"
         />
-        <q-btn label="Simpan" square unelevated dark color="primary">
+        <q-btn 
+          @click="onSubmit"
+          :loading="loading"
+          label="Simpan" square unelevated dark color="primary">
         </q-btn>
       </q-card-section>
     </q-card>
@@ -56,7 +59,7 @@ import {
   unref, 
   reactive
 } from 'vue'
-import { useDetailPurchase } from 'src/compose/purchase'
+import { useDetailPurchase, useUpdate } from 'src/compose/purchase'
 import { useListSupplier } from 'src/compose/supplier'
 import RupiahInput from 'components/rupiah-input.vue'
 
@@ -104,11 +107,18 @@ export default defineComponent({
       getSuppliers()
     })
 
+    const { update, loading } = useUpdate()
+    const onSubmit = () => {
+      update(id.value, payload)
+    }
+
     return {
       suppliers,
       payload,
       selectedSupplier,
-      purchase
+      purchase,
+      onSubmit,
+      loading
     }
   }
 })

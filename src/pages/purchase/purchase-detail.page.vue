@@ -22,6 +22,7 @@
           <q-card bordered flat>
             <q-toolbar class="bg-grey-2">
               <q-btn 
+                v-if="open"
                 :to="updatePurchaseURL"
                 outline
                 label="edit data pembelian"

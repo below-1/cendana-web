@@ -18,6 +18,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, PropType, computed, toRef, unref, Ref } from 'vue'
 import LoadingPane from 'components/loading-pane.vue';
+import { rupiah } from 'src/serv/currency'
 
 export default defineComponent({
   props: {
@@ -42,9 +43,9 @@ export default defineComponent({
         { label: 'Admin Yang Membuka Orderan', value: item.author.name },
         { label: 'Status Pembelian', value: item.orderStatus },
         { label: 'Pajak', value: item.tax },
-        { label: 'Biaya Pengiriman', value: item.shipping },
-        { label: 'Total', value: item.total },
-        { label: 'Grand Total', value: item.grandTotal }
+        { label: 'Biaya Pengiriman', value: rupiah(item.shipping) },
+        { label: 'Total', value: rupiah(item.total) },
+        { label: 'Grand Total', value: rupiah(item.grandTotal) }
       ]
       return items
     })

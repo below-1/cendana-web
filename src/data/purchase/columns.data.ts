@@ -24,7 +24,7 @@ export const COLUMNS = [
     name: 'status',
     align: 'left',
     field: 'orderStatus',
-    label: 'id',
+    label: 'status',
     required: true,
   },
   {

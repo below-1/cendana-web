@@ -48,12 +48,6 @@
               size="sm"
               @click="onRemove(props.row)"
             />
-            <q-btn
-              flat 
-              size="sm"
-              label="daftar item"
-              :to="`/app/stock-items/order/${props.row.id}`"
-            />
           </q-td>
         </template>
       </q-table>
