@@ -36,7 +36,11 @@
                 flat size="xs"
               />
               <q-btn
-                icon="edit" color="primary" flat size="xs" />
+                :to="updateUrl(props.row.id)"
+                icon="edit"
+                color="primary"
+                flat
+                size="xs" />
             </q-td>
           </template>
         </q-table>
@@ -70,6 +74,7 @@ export default defineComponent({
   setup() {
     const { params, result, loading: listLoading, getCustomers } = useListCustomer()
     const loading = computed(() => listLoading.value)
+    const updateUrl = (id: any) => `${BASE_APP_URL}/${id}/update`
     onMounted(() => {
       getCustomers()
     })
@@ -80,6 +85,7 @@ export default defineComponent({
       result,
       loading,
       CREATE_URL,
+      updateUrl,
       COLUMNS,
       params
     }
