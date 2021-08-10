@@ -24,7 +24,7 @@
         <q-table
           hide-pagination
           :columns="COLUMNS"
-          :rows="result.items"
+          :rows="customers.items"
           :rows-per-page-options="[0]"
           flat
         >
@@ -50,7 +50,7 @@
           <pagination
             v-model:page="params.page"
             v-model:per-page="params.perPage"
-            :total-page="result.totalPage"
+            :total-page="customers.totalPage"
           />
         </q-toolbar>
       </section>
@@ -64,7 +64,14 @@ import { defineComponent, computed, onMounted } from 'vue'
 import LoadingPane from 'components/loading-pane.vue'
 import Pagination from 'components/pagination.vue'
 import { useListCustomer } from 'src/compose/customer'
-import { COLUMNS, BASE_APP_URL } from 'src/data/customer'
+import { 
+  COLUMNS, 
+  ENTITY_NAME, 
+  BASE_APP_URL, 
+  BASE_API_URL 
+} from 'src/data/customer'
+import { Customer } from 'src/models/customer.model'
+import { useFilterEntity } from 'src/compose/entity'
 
 export default defineComponent({
   components: {
@@ -72,9 +79,21 @@ export default defineComponent({
     Pagination
   },
   setup() {
-    const { params, result, loading: listLoading, getCustomers } = useListCustomer()
-    const loading = computed(() => listLoading.value)
     const updateUrl = (id: any) => `${BASE_APP_URL}/${id}/update`
+
+    const {
+      result: customers,
+      getEntities: getCustomers,
+      params
+    } = useFilterEntity({
+      name: ENTITY_NAME,
+      url: BASE_API_URL,
+      initialParams: {
+        keyword: ''
+      }
+    })
+    const loading = computed(() => customers.value.type == 'loading')
+
     onMounted(() => {
       getCustomers()
     })
@@ -82,7 +101,7 @@ export default defineComponent({
     const CREATE_URL = `${BASE_APP_URL}/create`
 
     return {
-      result,
+      customers,
       loading,
       CREATE_URL,
       updateUrl,
