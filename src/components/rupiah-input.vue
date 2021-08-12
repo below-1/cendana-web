@@ -1,6 +1,5 @@
 <template>
   <q-input
-    filled
     class="q-mb-md"
     :model-value="displayed"
     @keyup="onKeyUp"

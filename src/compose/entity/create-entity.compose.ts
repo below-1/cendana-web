@@ -1,4 +1,4 @@
-import { ref, Ref } from 'vue';
+import { ref, Ref, inject } from 'vue';
 import { useQuasar } from 'quasar';
 import { api } from 'boot/axios';
 
@@ -28,11 +28,23 @@ export function useCreateEntity(entityName: string) {
   type Result = CreateResult | CreateLoading | CreateError | CreateIdle;
   const result: Ref<Result> = ref({ type: 'idle' } as CreateIdle);
   const $q = useQuasar();
+  const user = inject<Ref<any>>('user')
 
   async function createEntity(url: string, payload: any) {
     result.value = { type: 'loading' };
+    if (!user || !user.value || !user.value.id) {
+      $q.notify({
+        type: 'negative',
+        message: `Terjadi kesalahan autentikasi`,
+        closeBtn: true
+      })
+      return
+    }
     try {
-      const response = await api.post(url, payload);
+      const response = await api.post(url, {
+        ...payload,
+        authorId: user!.value.id
+      });
       const { data } = response;
       result.value = { type: 'result', data };
       $q.notify({

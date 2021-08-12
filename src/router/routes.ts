@@ -42,6 +42,13 @@ const routes: RouteRecordRaw[] = [
       },
       { path: 'sale', component: () => import('pages/sale/sale-list.page.vue') },
       { path: 'sale/create', component: () => import('pages/sale/sale-create.page.vue') },
+      { path: 'sale/:id/detail', 
+        component: () => import('pages/sale/sale-detail.page.vue'), 
+        props: true,
+        children: [
+          { path: 'items/:saleItemId', component: () => import('components/sale/update-sale-item.vue'), props: true },
+        ]
+      },
       { 
         path: 'stock-items/order/:order',
         component: () => import('pages/sitem/sitem-order.page.vue'),

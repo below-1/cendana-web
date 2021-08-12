@@ -39,7 +39,6 @@ export function useUpdateEntity(entityName: string) {
         message: `${SUCCESS_MESSAGE} ${entityName}`,
         closeBtn: true
       })
-      return data;
     } catch (err) {
       console.log(err);
       $q.notify({
@@ -49,6 +48,7 @@ export function useUpdateEntity(entityName: string) {
       })
       result.value = { type: 'error', error: err };
     }
+    return result.value
   }
 
   return {

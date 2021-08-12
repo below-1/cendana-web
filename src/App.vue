@@ -4,14 +4,13 @@
 
 <style>
 .q-table th {
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-family: monospace;
   font-weight: bold;
 }
 
 .q-table tbody td {
-  font-size: 0.76rem;
-  font-family: monospace;
+  font-size: 0.85rem;
 }
 </style>
 
