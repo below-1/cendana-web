@@ -20,6 +20,11 @@ const routes: RouteRecordRaw[] = [
       { path: 'ocat/create', component: () => import('pages/ocat/ocat-create.page.vue') },
       { path: 'ocat/:id/update', component: () => import('pages/ocat/ocat-update.page.vue'), props: true },
       { path: 'opex', component: () => import('pages/opex/opex-list.page.vue') },
+
+      { path: 'tcat', component: () => import('pages/tcat/tcat-list.page.vue') },
+      { path: 'tcat/create', component: () => import('pages/tcat/tcat-create.page.vue') },
+      { path: 'tcat/:id/update', component: () => import('pages/tcat/tcat-update.page.vue'), props: true },
+
       { path: 'customer', component: () => import('pages/customer/customer-list.page.vue') },
       { path: 'customer/:id/update', component: () => import('pages/customer/customer-update.page.vue'), props: true },
       { path: 'customer/create', component: () => import('pages/customer/customer-create.page.vue') },

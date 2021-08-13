@@ -42,8 +42,7 @@ export function useCreateEntity(entityName: string) {
     }
     try {
       const response = await api.post(url, {
-        ...payload,
-        authorId: user!.value.id
+        ...payload
       });
       const { data } = response;
       result.value = { type: 'result', data };
