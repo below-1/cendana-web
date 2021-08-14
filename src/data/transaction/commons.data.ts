@@ -8,12 +8,11 @@ export enum PaymentMethod {
 }
 
 export const PAYMENT_METHOD_OPTIONS = [
-  PaymentMethod.OFFLINE,
-  PaymentMethod.CASH,
-  PaymentMethod.ON_DELIVERY,
-  PaymentMethod.CHEQUE_DRAFT,
-  PaymentMethod.WIRED,
-  PaymentMethod.ONLINE
+  { label: 'Offline', value: PaymentMethod.OFFLINE },
+  { label: 'Kes', value: PaymentMethod.CASH },
+  { label: 'On Delivery', value: PaymentMethod.ON_DELIVERY },
+  { label: 'Check', value: PaymentMethod.CHEQUE_DRAFT },
+  { label: 'Online', value: PaymentMethod.ONLINE }
 ]
 
 export enum TransactionStatus {
@@ -25,3 +24,13 @@ export enum TransactionStatus {
   REJECTED = 'REJECTED',
   SUCCESS = 'SUCCESS'
 }
+
+export const TRANSACTION_STATUS_OPTIONS = [
+  { label: 'Berhasil', value: TransactionStatus.SUCCESS },
+  { label: 'Baru', value: TransactionStatus.NEW },
+  { label: 'Batal', value: TransactionStatus.CANCELLED },
+  { label: 'Gagal', value: TransactionStatus.FAILED },
+  { label: 'Pending', value: TransactionStatus.PENDING },
+  { label: 'Declined', value: TransactionStatus.DECLINED },
+  { label: 'Reject', value: TransactionStatus.REJECTED }
+]

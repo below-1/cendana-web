@@ -13,16 +13,21 @@
         dense
         class="q-mr-md"
       />
-      <q-btn flat color="primary" label="tambah" icon="add" />
+      <q-btn 
+        to="/app/opex/create" 
+        flat 
+        color="primary" 
+        label="tambah" 
+        icon="add" />
     </q-toolbar>
     <q-separator/>
-    <loading-pane v-if="loading" />
-    <template v-else>
+    <loading-pane v-if="opexes.type == 'loading'" />
+    <template v-else-if="opexes.type == 'data'">
       <section>
         <q-table
           hide-pagination
           :columns="COLUMNS"
-          :rows="result.items"
+          :rows="opexes.items"
           :rows-per-page-options="[0]"
           flat
         >
@@ -34,7 +39,11 @@
                 flat size="xs"
               />
               <q-btn
-                icon="edit" color="primary" flat size="xs" />
+                :to="`/app/opex/${props.row.id}/update`"
+                icon="edit" 
+                color="primary" 
+                flat 
+                size="xs" />
             </q-td>
           </template>
         </q-table>
@@ -44,7 +53,7 @@
           <pagination
             v-model:page="params.page"
             v-model:per-page="params.perPage"
-            :total-page="result.totalPage"
+            :total-page="opexes.totalPage"
           />
         </q-toolbar>
       </section>
@@ -54,27 +63,42 @@
 
 <script lang="ts">
 import { defineComponent, computed, onMounted } from 'vue'
+import MonthSelect from 'components/month-select.vue'
 import LoadingPane from 'components/loading-pane.vue'
 import Pagination from 'components/pagination.vue'
 import { useListOpex } from 'src/compose/opex'
+import { useFilterEntity } from 'src/compose/entity'
 import { COLUMNS } from 'src/data/opex'
 
 export default defineComponent({
   components: {
     LoadingPane,
     Pagination,
+    MonthSelect
   },
   setup() {
-    const { getOpexes, result, params, loading } = useListOpex()
+    const {
+      params,
+      result: opexes,
+      getEntities: getOpexes
+    } = useFilterEntity({
+      name: 'Beban Usaha',
+      url: '/v1/api/transactions',
+      initialParams: {
+        year: 2021,
+        month: 8,
+        keyword: '',
+        type: 'OPEX'
+      }
+    })
 
     onMounted(() => {
       getOpexes()
     })
 
     return {
-      result,
+      opexes,
       params,
-      loading,
       COLUMNS
     }
   }

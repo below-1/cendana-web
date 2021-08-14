@@ -1,6 +1,5 @@
 <template>
   <q-input
-    outlined
     v-model="model"
   >
     <template v-slot:prepend>

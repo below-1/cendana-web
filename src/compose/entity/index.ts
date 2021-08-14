@@ -1,7 +1,8 @@
-export * from './list-entity.compose';
-export * from './remove-entity.compose';
-export * from './single-entity.compose';
-export * from './create-entity.compose';
-export * from './update-entity.compose';
+export * from './list-entity.compose'
+export * from './remove-entity.compose'
+export * from './single-entity.compose'
+export * from './create-entity.compose'
+export * from './create-entity-v2.compose'
+export * from './update-entity.compose'
+export * from './update-entity-v2.compose'
 export * from './filter-entity.compose'
-
