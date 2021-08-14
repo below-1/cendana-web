@@ -3,7 +3,13 @@
   <q-card v-else-if="orderItems.type == 'data'" flat bordered>
     <q-toolbar class="bg-grey-2">
       <q-toolbar-title>Daftar Item Penjualan #{{ saleId }}</q-toolbar-title>
-      <q-btn @click="$emit('add-item')" flat color="blue" icon="add" label="tambah item" />
+      <q-btn 
+        v-if="!sealed"
+        @click="$emit('add-item')" 
+        flat 
+        color="blue" 
+        icon="add" 
+        label="tambah item" />
     </q-toolbar>
     <q-table 
       flat
@@ -13,13 +19,16 @@
       <template v-slot:body-cell-actions="props">
         <q-td :props="props">
           <q-btn
+            :disabled="sealed"
+            @click="() => $emit('remove-item', props.row)"
             icon="delete"
             color="red"
             flat
             size="sm"
           />
           <q-btn
-            @click="() => $emit('update-item', props.row.id)"
+            :disabled="sealed"
+            @click="() => $emit('update-item', props.row)"
             icon="edit"
             color="primary"
             flat
@@ -32,7 +41,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed, onMounted } from 'vue'
+import { 
+  defineComponent, 
+  PropType, 
+  computed, 
+  onMounted,
+  inject
+} from 'vue'
 import { COLUMNS } from 'src/data/oitem'
 import { useFilterEntity } from 'src/compose/entity'
 import LoadingPane from 'components/loading-pane.vue'
@@ -47,7 +62,7 @@ export default defineComponent({
       required: true
     }
   },
-  emits: ['add-item', 'update-item'],
+  emits: ['add-item', 'update-item', 'remove-item'],
   setup(props, { emit }) {
     const { params, result: orderItems, getEntities: getOrderItems } = useFilterEntity({
       url: '/v1/api/order-items',
@@ -59,12 +74,15 @@ export default defineComponent({
       },
     })
 
+    const sealed = inject('sealed')
+
     onMounted(getOrderItems)
 
     return {
       COLUMNS,
       orderItems,
-      getOrderItems
+      getOrderItems,
+      sealed
     }
   }
 })

@@ -42,7 +42,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, reactive, watch, toRef, ref, Ref, onMounted } from 'vue'
+import { 
+  defineComponent, 
+  PropType, 
+  reactive, 
+  watch, 
+  toRef, 
+  ref, 
+  unref,
+  Ref, 
+  onMounted,
+  inject
+} from 'vue'
 import { useModel } from 'src/compose/commons'
 import FreeProductForOrder from 'components/product/free-product-for-order.vue'
 import RupiahInput from 'components/rupiah-input.vue'
@@ -86,8 +97,12 @@ export default defineComponent({
       // console.log('new value = ', val)
     })
 
+    const user = inject<Ref<any>>('user')
     const quasar = useQuasar()
-    const { result: createResult, createEntity: createSaleItem } = useCreateEntity('Item Penjualan')
+    const { 
+      result: createResult, 
+      createEntity: createSaleItem 
+    } = useCreateEntity('Item Penjualan')
     const form: Ref<any> = ref(null)
     const onSubmit = async () => {
       const formElement = form.value
@@ -107,8 +122,18 @@ export default defineComponent({
         return
       }      
       const [ latestStock ] = product.stockRecords
+      const userValue = unref(user)
+      if (!userValue) {
+        quasar.notify({
+          type: 'negative',
+          message: 'Kesalahan autentikasi'
+        })
+        return
+      }
+
       const realPayload = {
         ...rest,
+        authorId: userValue.id,
         productId: product.id,
         stockItemId: latestStock.id,
         orderId: props.saleId

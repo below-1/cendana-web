@@ -1,6 +1,5 @@
 <template>
   <q-select
-    outlined
     class="q-mb-md"
     label="Pilih Pelanggan"
     use-input

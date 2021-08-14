@@ -11,12 +11,8 @@
         <div class="text-weight-bold">
           Pembelian #{{ sale.item.id }}
         </div>
-        <q-select
-          class="q-mb-md"
-          outlined
-          label="Metode Pembayaran"
-          :options="PAYMENT_METHOD_OPTIONS"
-          v-model="payload.paymentMethod"
+        <payment-method-options
+          v-model="payload.payment"
         />
         <rupiah-input
           label="Total Bayar"
@@ -57,9 +53,18 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { 
+  defineComponent, 
+  PropType, 
+  reactive 
+} from 'vue'
+import { PaymentMethod } from 'src/data/transaction'
+import PaymentMethodOptions from 'components/transaction/payment-method-options.vue'
 
 export default defineComponent({
+  components: {
+    PaymentMethodOptions,
+  },
   props: {
     sale: {
       type: Object as PropType<any>,
@@ -68,7 +73,10 @@ export default defineComponent({
   },
   emits: ['done'],
   setup(props, { emit }) {
-
+    const payload = reactive({
+      paymentMethod: PaymentMethod.ONLINE,
+      
+    })
   }
 })
 </script>

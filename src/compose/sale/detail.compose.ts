@@ -11,6 +11,9 @@ export function useDetailSale(id: Ref<string | number>) {
   const quasar = useQuasar()
 
   async function getSale() {
+    sale.value = {
+      type: 'loading'
+    }
     const url = `/v1/api/sales/${id.value}`
     try {
       const response = await api.get(url)

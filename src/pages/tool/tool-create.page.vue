@@ -2,7 +2,7 @@
   <q-page>
     <q-toolbar class="q-px-lg bg-grey-2">
       <q-toolbar-title class="text-weight-bold">
-        Tambah Beban Usaha
+        Tambah Biaya Peralatan
       </q-toolbar-title>
       <q-btn flat color="primary" label="tambah" icon="add" />
     </q-toolbar>
@@ -14,11 +14,11 @@
           bordered>
           <q-card-section>
             <q-form ref="form">
-              <ocat-options
-                v-model="payload.opex"
+              <tcat-options
+                v-model="payload.tool"
                 class="q-mb-md"
                 :rules="[
-                  v => !!v || 'Beban Usaha Harus Diisi'
+                  v => !!v || 'Kategori Peralatan Harus Diisi'
                 ]"
               />
               <rupiah-input
@@ -35,7 +35,7 @@
                 :display-value="selectedStatus"
               />
               <q-select
-                label="Metode Pembayaran"
+                label="Status Transaksi"
                 v-model="payload.paymentMethod"
                 :options="PAYMENT_METHOD_OPTIONS"
                 :display-value="selectedPaymentMethod"
@@ -84,20 +84,20 @@ import {
   TRANSACTION_STATUS_OPTIONS,
   PAYMENT_METHOD_OPTIONS
 } from 'src/data/transaction'
-import OcatOptions from 'components/ocat/ocat-options.vue'
+import TcatOptions from 'components/tcat/tcat-options.vue'
 import RupiahInput from 'components/rupiah-input.vue'
 import DatetimeInput from 'components/datetime-input.vue'
 
 export default defineComponent({
   components: {
     LoadingPane,
-    OcatOptions,
+    TcatOptions,
     RupiahInput,
     DatetimeInput
   },
   setup(props) {
     const payload = reactive<any>({
-      opex: {},
+      tool: {},
       nominal: '0',
       status: 'SUCCESS',
       paymentMethod: 'ONLINE',
@@ -116,14 +116,14 @@ export default defineComponent({
 
     const user = inject<any>('user')
     const { createEntity, result } = useCreateEntityV2({
-      entityName: 'Beban Usaha',
+      entityName: 'Biaya Peralatan',
       transform: (p) => {
-        const { opex, createdAt, ...rest } = p
+        const { tool, createdAt, ...rest } = p
         const userVal = user.value
         return {
           ...rest,
           createdAt: toISO(createdAt),
-          opexId: opex.id,
+          toolId: tool.id,
           authorId: userVal.id
         }
       }
@@ -139,7 +139,7 @@ export default defineComponent({
       if (!isValid) {
         return
       }
-      createEntity('/v1/api/opex-trans', payload)
+      createEntity('/v1/api/tool-trans', payload)
     }
 
     return {

@@ -60,12 +60,16 @@ export function useRemoveEntity(entityName: string) {
         cancel: 'batalkan'
       })
         .onOk(() => {
-          remove(url);
-          resolve(true);
+          remove(url).then(() => {
+            resolve(true);
+          })
         })
         .onDismiss(() => {
           reject(false);
-        });
+        })
+        .onCancel(() => {
+          reject(false);
+        })
     });
     return promptResult;
   };

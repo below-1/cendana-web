@@ -19,14 +19,17 @@ const routes: RouteRecordRaw[] = [
       { path: 'ocat', component: () => import('pages/ocat/ocat-list.page.vue') },
       { path: 'ocat/create', component: () => import('pages/ocat/ocat-create.page.vue') },
       { path: 'ocat/:id/update', component: () => import('pages/ocat/ocat-update.page.vue'), props: true },
+      { path: 'tcat', component: () => import('pages/tcat/tcat-list.page.vue') },
+      { path: 'tcat/create', component: () => import('pages/tcat/tcat-create.page.vue') },
+      { path: 'tcat/:id/update', component: () => import('pages/tcat/tcat-update.page.vue'), props: true },
 
       { path: 'opex', component: () => import('pages/opex/opex-list.page.vue') },
       { path: 'opex/create', component: () => import('pages/opex/opex-create.page.vue') },
       { path: 'opex/:id/update', component: () => import('pages/opex/opex-update.page.vue'), props: true },
 
-      { path: 'tcat', component: () => import('pages/tcat/tcat-list.page.vue') },
-      { path: 'tcat/create', component: () => import('pages/tcat/tcat-create.page.vue') },
-      { path: 'tcat/:id/update', component: () => import('pages/tcat/tcat-update.page.vue'), props: true },
+      { path: 'tool', component: () => import('pages/tool/tool-list.page.vue') },
+      { path: 'tool/create', component: () => import('pages/tool/tool-create.page.vue') },
+      { path: 'tool/:id/update', component: () => import('pages/tool/tool-update.page.vue'), props: true },
 
       { path: 'customer', component: () => import('pages/customer/customer-list.page.vue') },
       { path: 'customer/:id/update', component: () => import('pages/customer/customer-update.page.vue'), props: true },
@@ -55,6 +58,8 @@ const routes: RouteRecordRaw[] = [
         props: true,
         children: [
           { path: 'items/:saleItemId', component: () => import('components/sale/update-sale-item.vue'), props: true },
+          { path: 'update', component: () => import('pages/sale/sale-update.page.vue'), props: true },
+          { path: 'seal', component: () => import('pages/sale/sale-seal.page.vue'), props: true },
         ]
       },
       { 

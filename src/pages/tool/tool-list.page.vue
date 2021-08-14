@@ -3,7 +3,7 @@
 
     <q-toolbar class="q-px-lg bg-grey-2">
       <q-toolbar-title class="text-weight-bold">
-        Data Beban Usaha
+        Data Biaya Peralatan
       </q-toolbar-title>
       <q-input
         placeholder="keyword..."
@@ -14,20 +14,20 @@
         class="q-mr-md"
       />
       <q-btn 
-        to="/app/opex/create" 
+        to="/app/tool/create" 
         flat 
         color="primary" 
         label="tambah" 
         icon="add" />
     </q-toolbar>
     <q-separator/>
-    <loading-pane v-if="opexes.type == 'loading'" />
-    <template v-else-if="opexes.type == 'data'">
+    <loading-pane v-if="tools.type == 'loading'" />
+    <template v-else-if="tools.type == 'data'">
       <section>
         <q-table
           hide-pagination
           :columns="COLUMNS"
-          :rows="opexes.items"
+          :rows="tools.items"
           :rows-per-page-options="[0]"
           flat
         >
@@ -39,7 +39,7 @@
                 flat size="xs"
               />
               <q-btn
-                :to="`/app/opex/${props.row.id}/update`"
+                :to="`/app/tool/${props.row.id}/update`"
                 icon="edit" 
                 color="primary" 
                 flat 
@@ -53,7 +53,7 @@
           <pagination
             v-model:page="params.page"
             v-model:per-page="params.perPage"
-            :total-page="opexes.totalPage"
+            :total-page="tools.totalPage"
           />
         </q-toolbar>
       </section>
@@ -67,7 +67,7 @@ import MonthSelect from 'components/month-select.vue'
 import LoadingPane from 'components/loading-pane.vue'
 import Pagination from 'components/pagination.vue'
 import { useFilterEntity } from 'src/compose/entity'
-import { COLUMNS } from 'src/data/opex'
+import { COLUMNS } from 'src/data/tool'
 
 export default defineComponent({
   components: {
@@ -78,25 +78,25 @@ export default defineComponent({
   setup() {
     const {
       params,
-      result: opexes,
-      getEntities: getOpexes
+      result: tools,
+      getEntities: getTools
     } = useFilterEntity({
-      name: 'Beban Usaha',
+      name: 'Biaya Peralatan',
       url: '/v1/api/transactions',
       initialParams: {
         year: 2021,
         month: 8,
         keyword: '',
-        type: 'OPEX'
+        type: 'TOOL'
       }
     })
 
     onMounted(() => {
-      getOpexes()
+      getTools()
     })
 
     return {
-      opexes,
+      tools,
       params,
       COLUMNS
     }

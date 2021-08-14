@@ -2,7 +2,7 @@
   <q-page>
     <q-toolbar class="q-px-lg bg-grey-2">
       <q-toolbar-title class="text-weight-bold">
-        Tambah Beban Usaha
+        Update Biaya Peralatan
       </q-toolbar-title>
       <q-btn flat color="primary" label="tambah" icon="add" />
     </q-toolbar>
@@ -14,11 +14,11 @@
           bordered>
           <q-card-section>
             <q-form ref="form">
-              <ocat-options
-                v-model="payload.opex"
+              <tcat-options
+                v-model="payload.tool"
                 class="q-mb-md"
                 :rules="[
-                  v => !!v || 'Beban Usaha Harus Diisi'
+                  v => !!v || 'Biaya Peralatan Harus Diisi'
                 ]"
               />
               <rupiah-input
@@ -35,7 +35,7 @@
                 :display-value="selectedStatus"
               />
               <q-select
-                label="Metode Pembayaran"
+                label="Status Transaksi"
                 v-model="payload.paymentMethod"
                 :options="PAYMENT_METHOD_OPTIONS"
                 :display-value="selectedPaymentMethod"
@@ -70,61 +70,89 @@ import {
   ref, 
   inject, 
   reactive,
-  computed
+  computed,
+  onMounted,
+  PropType
 } from 'vue'
 import LoadingPane from 'components/loading-pane.vue'
 import { 
-  defaultDateTime, 
+  defaultDateTime,
+  formatDateTime,
   toISO 
 } from 'src/serv/datetime';
-import { useCreateEntityV2 } from 'src/compose/entity'
+import { 
+  useSingleEntity, 
+  useUpdateEntityV2
+} from 'src/compose/entity'
 import { 
   TransactionStatus, 
   PaymentMethod, 
   TRANSACTION_STATUS_OPTIONS,
   PAYMENT_METHOD_OPTIONS
 } from 'src/data/transaction'
-import OcatOptions from 'components/ocat/ocat-options.vue'
+import TcatOptions from 'components/tcat/tcat-options.vue'
 import RupiahInput from 'components/rupiah-input.vue'
 import DatetimeInput from 'components/datetime-input.vue'
 
+function getInitialData(id: string | number) {
+  const { 
+    getSingleEntity
+  } = useSingleEntity('Biaya Peralatan')
+
+  return getSingleEntity(`/v1/api/tool-trans/${id}`)
+}
+
 export default defineComponent({
+  props: {
+    id: {
+      type: String as PropType<string>,
+      required: true
+    }
+  },
   components: {
     LoadingPane,
-    OcatOptions,
+    TcatOptions,
     RupiahInput,
     DatetimeInput
   },
   setup(props) {
     const payload = reactive<any>({
-      opex: {},
+      tool: {},
       nominal: '0',
       status: 'SUCCESS',
       paymentMethod: 'ONLINE',
       createdAt: defaultDateTime()
     })
+
+    onMounted(async () => {
+      const data: any = await getInitialData(props.id)
+      payload.tool = data.tool
+      payload.nominal = data.nominal
+      payload.status = data.status
+      payload.paymentMethod = data.paymentMethod
+      payload.createdAt = formatDateTime(new Date(data.createdAt))
+    })
+
     const selectedStatus = computed(() => {
       const selected = TRANSACTION_STATUS_OPTIONS.find((it: any) => it.value == payload.status)
       if (!selected) return '-- pilih status transaksi --'
       return selected.label
     })
+
     const selectedPaymentMethod = computed(() => {
       const selected = PAYMENT_METHOD_OPTIONS.find((it: any) => it.value == payload.paymentMethod)
       if (!selected) return '-- pilih metode pembayaran --'
       return selected.label
     })
 
-    const user = inject<any>('user')
-    const { createEntity, result } = useCreateEntityV2({
+    const { updateEntity, result } = useUpdateEntityV2({
       entityName: 'Beban Usaha',
       transform: (p) => {
-        const { opex, createdAt, ...rest } = p
-        const userVal = user.value
+        const { tool, createdAt, ...rest } = p
         return {
           ...rest,
-          createdAt: toISO(createdAt),
-          opexId: opex.id,
-          authorId: userVal.id
+          toolId: tool.id,
+          createdAt: toISO(createdAt)
         }
       }
     })
@@ -139,7 +167,7 @@ export default defineComponent({
       if (!isValid) {
         return
       }
-      createEntity('/v1/api/opex-trans', payload)
+      updateEntity(`/v1/api/tool-trans/${props.id}`, payload)
     }
 
     return {

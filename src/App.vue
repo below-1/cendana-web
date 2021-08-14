@@ -3,7 +3,7 @@
 </template>
 
 <style>
-.q-table th {
+/*.q-table th {
   font-size: 0.75rem;
   font-family: monospace;
   font-weight: bold;
@@ -11,7 +11,7 @@
 
 .q-table tbody td {
   font-size: 0.85rem;
-}
+}*/
 </style>
 
 <script lang="ts">

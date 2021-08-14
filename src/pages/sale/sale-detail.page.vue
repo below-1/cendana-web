@@ -4,7 +4,22 @@
       <q-toolbar-title class="text-weight-bold">
         Detail Penjualan #{{ id }}
       </q-toolbar-title>
-      <q-btn flat color="primary" label="kunci penjualan" icon="add" />
+
+      <template v-if="!sealed">
+        <q-btn
+          :to="updateSaleURL"
+          flat
+          color="primary"
+          label="Edit Data Penjualan"
+          icon="edit" />
+        <q-btn
+          :to="sealSaleURL"
+          flat 
+          color="primary" 
+          label="kunci penjualan" 
+          icon="add" 
+        />
+      </template>
     </q-toolbar>
     <q-separator/>
 
@@ -85,10 +100,12 @@
             :sale-id="id"
             @add-item="showAddSaleItem = true"
             @update-item="onUpdateItem"
+            @remove-item="onRemoveItem"
           />
         </div>
       </div>
     </div>
+
     <add-sale-item :sale-id="id" v-model:show="showAddSaleItem" />
 
     <router-view/>
@@ -109,6 +126,7 @@ import {
 import { useRoute, useRouter } from 'vue-router'
 import { rupiah } from 'src/serv/currency'
 import { useDetailSale } from 'src/compose/sale'
+import { useRemoveEntity } from 'src/compose/entity'
 import LoadingPane from 'components/loading-pane.vue'
 import OrderStatusChip from 'components/order/order-status-chip.vue'
 import SaleItems from 'components/sale/sale-items.vue'
@@ -131,6 +149,13 @@ export default defineComponent({
   },
   setup(props) {
     const { sale, getSale } = useDetailSale(toRef(props, 'id'))
+
+    const sealed = computed(() => {
+      const saleValue = unref(sale)
+      if (saleValue.type != 'data') return true;
+      return saleValue.item.orderStatus == 'SEALED'
+    })
+
     const listingItems = computed(() => {
       const saleValue = unref(sale)
       if (saleValue.type != 'data') {
@@ -157,9 +182,27 @@ export default defineComponent({
       const targetPath = route.fullPath + '/items/' + itemId
       router.push(targetPath)
     }
+    const updateSaleURL = computed(() => route.fullPath + '/update')
+    const sealSaleURL = computed(() => route.fullPath + '/seal')
 
     const showAddSaleItem = ref(false)
     const showRemoveSaleItem = ref(false)
+
+    const {
+      result: removeResult,
+      promptRemove
+    } = useRemoveEntity('Item Penjualan')
+    const onRemoveItem = (item: any) => {
+      console.log(item)
+      promptRemove(`/v1/api/order-items/${item.id}`, item.product.name)
+        .then(() => {
+          console.log('about to reload')
+          getSale()
+        })
+    }
+
+    provide('sale', sale)
+    provide('sealed', sealed)
 
     return {
       sale,
@@ -168,7 +211,11 @@ export default defineComponent({
       rupiah,
       showAddSaleItem,
       showRemoveSaleItem,
-      onUpdateItem
+      onUpdateItem,
+      onRemoveItem,
+      updateSaleURL,
+      sealSaleURL,
+      sealed
     }
   }
 })
