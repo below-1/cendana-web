@@ -12,6 +12,7 @@
     <loading-pane v-if="showLoading" />
 
     <template v-else>
+      <q-separator/>
       <section class="q-px-lg">
         <q-table
           flat
@@ -31,11 +32,29 @@
               <q-btn
                 :to="generateUpdateURL(props.row.id)"
                 icon="edit" color="primary" flat size="xs" />
+              <q-btn-dropdown 
+                color="primary" 
+                icon="settings" 
+                flat 
+                size="xs">
+                <q-list separator>
+                  <q-item :to="getPurchaseURL(props.row.id)">
+                    <q-item-section>
+                      <q-item-label>Daftar Pembelian</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item :to="getSaleURL(props.row.id)">
+                    <q-item-section>
+                      <q-item-label>Daftar Penjualan</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-btn-dropdown>
             </q-td>
           </template>
         </q-table>
       </section>
-
+      <q-separator/>
       <section class="q-px-lg">
         <q-toolbar class="text-grey-8 q-py-lg">
           <pagination
@@ -53,6 +72,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router'
 import { useFilterEntity, useRemoveEntity } from 'src/compose/entity';
 import LoadingPane from 'components/loading-pane.vue';
 import Pagination from 'components/pagination.vue'
@@ -87,6 +107,7 @@ export default defineComponent({
       }
     })
 
+
     onMounted(getProducts)
 
     const {
@@ -101,6 +122,12 @@ export default defineComponent({
 
     const showLoading = computed(() => products.value.type == 'loading' || removeResult.value.type == 'loading');
 
+    const route = useRoute()
+    const getSaleURL = (id: number) => 
+      `${route.fullPath}/${id}/sales`
+    const getPurchaseURL = (id: number) => 
+      `${route.fullPath}/${id}/purchases`
+
     return {
       COLUMNS,
       ENTITY_NAME,
@@ -110,6 +137,8 @@ export default defineComponent({
       generateUpdateURL,
       onRemove,
       showLoading,
+      getSaleURL,
+      getPurchaseURL
     };
   },
 });

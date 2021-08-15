@@ -17,8 +17,8 @@ export const baseMenus: Menu[] = [
   { path: '/app/opex', label: 'beban usaha', icon: 'rowing' },
   { path: '/app/tool', label: 'biaya peralatan', icon: 'production_quantity_limits' },
   { separator: true, label: 'Hutang/Piutang' },
-  { path: '/app/ap', label: 'Hutang', icon: 'send_and_archive' },
-  { path: '/app/ar', label: 'Piutang', icon: 'monetization_on' },
+  { path: '/app/delay-payable', label: 'Hutang', icon: 'send_and_archive' },
+  { path: '/app/delay-receivable', label: 'Piutang', icon: 'send_and_archive' }
 ];
 
 export const adminMenus: Menu[] = [

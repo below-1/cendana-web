@@ -27,6 +27,10 @@ const routes: RouteRecordRaw[] = [
       { path: 'opex/create', component: () => import('pages/opex/opex-create.page.vue') },
       { path: 'opex/:id/update', component: () => import('pages/opex/opex-update.page.vue'), props: true },
 
+      { path: 'delay-receivable', component: () => import('pages/delay-rec/delay-rec-list.page.vue') },
+
+      { path: 'delay-payable', component: () => import('pages/delay-pay/delay-pay-list.page.vue') },
+
       { path: 'tool', component: () => import('pages/tool/tool-list.page.vue') },
       { path: 'tool/create', component: () => import('pages/tool/tool-create.page.vue') },
       { path: 'tool/:id/update', component: () => import('pages/tool/tool-update.page.vue'), props: true },
@@ -37,9 +41,25 @@ const routes: RouteRecordRaw[] = [
       { path: 'supplier', component: () => import('pages/supplier/supplier-list.page.vue') },
       { path: 'supplier/create', component: () => import('pages/supplier/supplier-create.page.vue') },
       { path: 'supplier/:id/update', component: () => import('pages/supplier/supplier-update.page.vue'), props: true },
+
       { path: 'product', component: () => import('pages/product/product-list.page.vue') },
       { path: 'product/create', component: () => import('pages/product/product-create.page.vue') },
-      { path: 'product/:id/update', component: () => import('pages/product/product-update.page.vue'), props: true },
+      { 
+        path: 'product/:id/update', 
+        component: () => import('pages/product/product-update.page.vue'), 
+        props: true 
+      },
+      { 
+        path: 'product/:id/purchases', 
+        component: () => import('pages/product/product-purchases.page.vue'), 
+        props: true 
+      },
+      { 
+        path: 'product/:id/sales', 
+        component: () => import('pages/product/product-sales.page.vue'), 
+        props: true 
+      },
+
       { path: 'purchase', component: () => import('pages/purchase/purchase-list.page.vue') },
       { path: 'purchase/create', component: () => import('pages/purchase/purchase-create.page.vue') },
       { 

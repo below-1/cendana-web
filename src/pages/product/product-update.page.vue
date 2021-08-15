@@ -10,9 +10,18 @@
         <q-card class="rounded-borders" flat bordered>
           <q-card-section v-if="initialData.type != 'loading'">
             <q-form ref="form">
-              <q-input label="Nama Produk" v-model="payload.name" class="q-mb-md" outlined />
-              <q-input label="Unit Produk" v-model="payload.unit" class="q-mb-md" outlined />
-              <options-product-category v-model="payload.categories"/>
+              <q-input 
+                label="Nama Produk"
+                v-model="payload.name"
+                class="q-mb-md"
+                outlined />
+              <q-input
+                label="Unit Produk"
+                v-model="payload.unit"
+                class="q-mb-md"
+                outlined />
+              <options-product-category 
+                v-model="payload.categories"/>
             </q-form>
           </q-card-section>
           <q-separator />
@@ -22,7 +31,8 @@
               :loading="updateResult.type == 'loading'"
               color="blue"
               dark
-              label="simpan" unelevated />
+              label="simpan" 
+              unelevated />
           </div>
         </q-card>
       </div>
@@ -39,10 +49,14 @@ import {
   computed,
   reactive,
   ref,
+  unref,
   Ref,
   watch
 } from 'vue';
-import { useSingleEntity, useUpdateEntity } from 'src/compose/entity'
+import { 
+  useSingleEntity, 
+  useUpdateEntity 
+} from 'src/compose/entity'
 import { useFindProductCategories } from 'src/compose/pcat'
 import OptionsProductCategory from 'components/pcat/options-product-category.vue'
 
@@ -62,14 +76,26 @@ export default defineComponent({
       name: '',
       unit: '',
       categories: [],
-      sellPrice: ''
+      sellPrice: '',
+      defect: 0
     })
 
     const url = computed(() => {
       const idVal = id.value
       return idVal ? `/v1/api/products/${id.value}` : ''
     })
-    const { getSingleEntity, result: initialData } = useSingleEntity('Produk')
+    const { 
+      getSingleEntity, 
+      result: initialData 
+    } = useSingleEntity('Produk')
+
+    // const maxDefect = computed(() => {
+    //   const initialDataVal = unref(initialData)
+    //   if (!initialDataVal) return 0
+    //   if (initialDataVal.type != 'data') return 0
+    //   const { data } = initialDataVal
+    //   return data.available
+    // })
 
     onMounted(async () => {
       const data: any = await getSingleEntity(url.value)
@@ -77,6 +103,7 @@ export default defineComponent({
       payload.unit = data.unit
       payload.sellPrice = data.sellPrice
       payload.categories = data.categories
+      payload.defect = data.defect
     })
 
     const {
