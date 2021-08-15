@@ -61,6 +61,15 @@
           </q-td>
         </template>
       </q-table>
+      <section class="q-px-lg">
+        <q-toolbar class="text-grey-8 q-py-lg">
+          <pagination
+            v-model:page="params.page"
+            v-model:per-page="params.perPage"
+            :total-page="sales.totalPage"
+          />
+        </q-toolbar>
+      </section>
     </template>
 
   </q-page>
@@ -71,12 +80,14 @@ import { defineComponent, onMounted } from 'vue'
 import { ENTITY_NAME, BASE_APP_URL, BASE_API_URL, COLUMNS } from 'src/data/sale'
 import MonthSelect from 'components/month-select.vue'
 import LoadingPane from 'components/loading-pane.vue'
+import Pagination from 'components/pagination.vue'
 import { useFilterEntity } from 'src/compose/entity'
 
 export default defineComponent({
   components: {
     MonthSelect,
     LoadingPane,
+    Pagination,
   },
   setup() {
     const initialParams = {
