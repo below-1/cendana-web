@@ -25,7 +25,6 @@ export function useUpdate() {
       })
     } finally {
       loading.value = false
-      router.back()
     }
   }
 

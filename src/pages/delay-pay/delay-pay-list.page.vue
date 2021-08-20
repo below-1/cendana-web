@@ -48,13 +48,7 @@
           <template v-slot:body-cell-actions="props">
             <q-td :props="props">
               <q-btn
-                icon="delete"
-                color="red"
-                flat size="xs"
-              />
-              <q-btn
-                :to="`/app/opex/${props.row.id}/update`"
-                icon="edit" 
+                icon="more_horiz" 
                 color="primary" 
                 flat 
                 size="xs" />

@@ -1,8 +1,8 @@
 import { 
   ref, 
-  unref,
-  isRef,
   Ref, 
+  isRef,
+  unref,
   reactive, 
   watch, 
   onMounted
@@ -33,7 +33,7 @@ interface ListEntityOptions<U> {
   name: string;
 }
 
-export function useFilterEntity<T>(options: any) {
+export function useFilterEntityV2<T>(options: any) {
   let rawParams: any = {
     page: 0,
     perPage: 10

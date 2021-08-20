@@ -7,16 +7,17 @@
       </q-toolbar-title>
       <q-btn
         v-if="open"
+        @click="$emit('add')"
         outline
         color="primary" 
         label="tambah" 
         icon="add" 
-        :to="addURL" />
+      />
     </q-toolbar>
     <q-table
       flat
       hide-pagination
-      :columns="COLUMNS"
+      :columns="columns"
       :rows="stockItems.items"
       :rows-per-page-options="[0]">
       <template
@@ -75,6 +76,7 @@
       </div>
     </div>
   </q-card>
+
 </template>
 
 <script lang="ts">
@@ -85,12 +87,14 @@ import {
   onMounted,
   toRef,
   Ref
-} from 'vue';
-import { useRoute } from 'vue-router';
-import LoadingPane from 'components/loading-pane.vue';
+} from 'vue'
+import { useRoute } from 'vue-router'
 import { useRemoveEntity } from 'src/compose/entity'
 import { useFilterForOrder } from 'src/compose/sitem'
-import { COLUMNS } from 'src/data/sitem'
+import columns from './columns'
+
+import AddStockItem from 'components/sitem/add-stock-item.vue'
+import LoadingPane from 'components/loading-pane.vue'
 
 type Totals = {
   subTotal: string;
@@ -116,7 +120,8 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props) {
+  emits: ['deleted', 'add'],
+  setup(props, { emit }) {
     const orderId: Ref<any> = toRef(props, 'orderId')
     const route = useRoute()
     const addURL = computed(() => `/app/stock-items/order/${orderId.value}/add`)
@@ -132,6 +137,10 @@ export default defineComponent({
 
     const onRemove = (id: any) => {
       promptRemove(`/v1/api/stock-items/${id}`, id)
+        .then((deleted: boolean) => {
+          if (!deleted) return;
+          emit('deleted')
+        })
     }
 
     onMounted(() => {
@@ -146,7 +155,7 @@ export default defineComponent({
       removeResult,
       promptRemove,
       onRemove,
-      COLUMNS
+      columns
     }
   }
 })

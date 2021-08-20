@@ -20,16 +20,9 @@
       >
         <template v-slot:body-cell-status="props">
           <q-td :props="props">
-            <q-chip v-if="props.row.orderStatus == 'OPEN'"
-              size="sm"
-              color="red" text-color="white">
-              Open
-            </q-chip>
-            <q-chip v-else
-              size="sm"
-              color="green" text-color="white">
-              Locked
-            </q-chip>
+            <order-status-chip 
+              :status="props.row.orderStatus"
+            />
           </q-td>
         </template>
         <template v-slot:body-cell-actions="props">
@@ -87,6 +80,7 @@
 import { defineComponent, computed } from 'vue';
 import { useListEntity, useRemoveEntity } from 'src/compose/entity';
 import LoadingPane from 'components/loading-pane.vue';
+import OrderStatusChip from 'components/order/order-status-chip.vue'
 import {
   ENTITY_NAME,
   BASE_APP_URL,
@@ -97,6 +91,7 @@ import {
 export default defineComponent({
   components: {
     LoadingPane,
+    OrderStatusChip,
   },
   setup() {
     const CREATE_URL = BASE_APP_URL + '/create';

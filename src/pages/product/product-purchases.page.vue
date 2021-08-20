@@ -22,6 +22,7 @@
         flat
         hide-pagination
       >
+
         <template v-slot:body-cell-order="props">
           <q-td :props="props">
             <router-link 
@@ -29,6 +30,24 @@
             >#{{ props.row.orderId }}</router-link>
           </q-td>
         </template>
+
+        <template v-slot:body-cell-actions="props">
+          <q-td :props="props">
+            <q-btn-dropdown color="primary" outline size="xs" icon="more_horiz">
+              <q-list separator>
+                <q-item 
+                  clickable 
+                  @click="onUpdateDefect(props.row.id)"
+                >
+                  <q-item-section>
+                    <q-item-label>Update Jumlah Rusak</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-btn-dropdown>
+          </q-td>
+        </template>
+
       </q-table>
       <q-separator/>
       <section class="q-px-lg">
@@ -44,6 +63,11 @@
 
     <loading-pane v-else />
 
+    <update-defect 
+      :id="selectedId" 
+      :product-id="id"
+    />
+
   </q-page>
 </template>
 
@@ -53,7 +77,8 @@ import {
   PropType,
   toRef,
   watch,
-  onMounted
+  onMounted,
+  ref
 } from 'vue'
 import { format } from 'date-fns'
 import { id as LocaleID } from 'date-fns/locale'
@@ -62,6 +87,7 @@ import { useSingleEntity } from 'src/compose/entity'
 import { rupiah } from 'src/serv/currency'
 import LoadingPane from 'components/loading-pane.vue'
 import Pagination from 'components/pagination.vue'
+import UpdateDefect from 'components/sitem/update-defect.vue'
 
 const columns = [
   {
@@ -123,6 +149,13 @@ const columns = [
     field: 'quantity',
     label: 'Total',
     required: true
+  },
+  {
+    name: 'actions',
+    align: 'left',
+    field: 'id',
+    label: '',
+    required: true
   }
 ]
 
@@ -135,7 +168,8 @@ export default defineComponent({
   },
   components: {
     LoadingPane,
-    Pagination
+    Pagination,
+    UpdateDefect
   },
   setup(props) {
     const productId = toRef(props, 'id')
@@ -159,11 +193,18 @@ export default defineComponent({
       getPurchases()
     })
 
+    const selectedId = ref(0)
+    const onUpdateDefect = (id: number) => {
+      selectedId.value = id
+    }
+
     return {
+      selectedId,
       product,
       params,
       purchases,
-      columns
+      columns,
+      onUpdateDefect
     }
   }
 })

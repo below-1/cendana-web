@@ -28,6 +28,11 @@ const routes: RouteRecordRaw[] = [
       { path: 'opex/:id/update', component: () => import('pages/opex/opex-update.page.vue'), props: true },
 
       { path: 'delay-receivable', component: () => import('pages/delay-rec/delay-rec-list.page.vue') },
+      { 
+        path: 'delay-receivable/:id/detail', 
+        component: () => import('pages/delay-rec/delay-detail.page.vue'),
+        props: true
+      },
 
       { path: 'delay-payable', component: () => import('pages/delay-pay/delay-pay-list.page.vue') },
 
@@ -63,17 +68,14 @@ const routes: RouteRecordRaw[] = [
       { path: 'purchase', component: () => import('pages/purchase/purchase-list.page.vue') },
       { path: 'purchase/create', component: () => import('pages/purchase/purchase-create.page.vue') },
       { 
-        path: 'purchase/:id/detail', 
-        component: () => import('pages/purchase/purchase-detail.page.vue'), 
-        props: true,
-        children: [
-          { path: 'update', component: () => import('pages/purchase/purchase-update.page.vue'), props: true },
-          { path: 'seal', component: () => import('pages/purchase/purchase-seal.page.vue'), props: true },
-        ]
+        path: 'purchase/:orderId/detail', 
+        component: () => import('pages/purchase/detail/purchase-detail.page.vue'), 
+        props: true
       },
       { path: 'sale', component: () => import('pages/sale/sale-list.page.vue') },
       { path: 'sale/create', component: () => import('pages/sale/sale-create.page.vue') },
-      { path: 'sale/:id/detail', 
+      { 
+        path: 'sale/:id/detail', 
         component: () => import('pages/sale/sale-detail.page.vue'), 
         props: true,
         children: [

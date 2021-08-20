@@ -52,7 +52,7 @@ export function useRemoveEntity(entityName: string) {
   };
 
   const promptRemove = (url: string, label: any) => {
-    const promptResult = new Promise((resolve, reject) => {
+    const promptResult = new Promise<boolean>((resolve, reject) => {
       $q.dialog({
         title: `${BASE_TITLE} ${entityName} #${label}?`,
         message: BASE_MESSAGE,
@@ -60,18 +60,22 @@ export function useRemoveEntity(entityName: string) {
         cancel: 'batalkan'
       })
         .onOk(() => {
-          remove(url).then(() => {
-            resolve(true);
-          })
+          remove(url)
+            .then(() => {
+              resolve(true)
+            })
+            .catch(err => {
+              reject(err)
+            })
         })
         .onDismiss(() => {
-          reject(false);
+          resolve(false)
         })
         .onCancel(() => {
-          reject(false);
+          resolve(false)
         })
     });
-    return promptResult;
+    return promptResult
   };
 
   return {

@@ -23,13 +23,22 @@ interface SingleLoading {
   type: 'loading';
 }
 
-export function useSingleEntity<T>(entityName: string) {
+interface Options {
+  entityName: string;
+  url: string | Ref<string>
+}
+
+export function useSingleEntityV2<T>(options: Options) {
+  const { 
+    entityName
+  } = options
   type Result = SingleResult<T> | SingleLoading | SingleError;
 
   const result: Ref<Result> = ref({ type: 'loading' } as SingleLoading);
   const $q = useQuasar();
 
-  async function getSingleEntity(url: string) {
+  async function getSingleEntity() {
+    const url = isRef(options.url) ? unref(options.url) : options.url
     result.value = { type: 'loading' };
     try {
       const response = await api.get<T>(url);

@@ -64,8 +64,9 @@ export default defineComponent({
       // console.log(realPayload);
       // return;
       createEntity(BASE_API_URL, realPayload)
-        .then(() => {
-          $router.back();
+        .then((data) => {
+          const { id } = data
+          $router.push(`/app/purchase/${id}/detail`);
         });
     };
     const options: any = reactive({
