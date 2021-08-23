@@ -1,35 +1,31 @@
 <template>
-  <q-dialog
-    v-model="showState"
-  >
-    <q-card flat bordered style="width: 500px;">
-      <div class="q-pa-sm" v-if="product.type == 'result'">
-        <h6 class="q-my-none">{{ product.data.name }}  --  Ubah Jumlah Rusak</h6>
-      </div>
-      <q-separator/>
-      <q-card-section>
-        <q-form ref="form">
-          <q-input
-            v-model="payload.defect"
-            type="number"
-            :min="0"
-            :max="maxDefect"
-            label="Jumlah Rusak"
-          />
-        </q-form>
-      </q-card-section>
-      <q-separator/>
-      <q-card-actions align="center">
-        <q-btn 
-          @click="onSubmit"
-          :loading="updateResult.type == 'loading'"
-          outline 
-          color="primary"
-          label="submit"
+  <q-card flat bordered style="width: 500px;">
+    <div class="q-pa-sm" v-if="product.type == 'result'">
+      <h6 class="q-my-none">{{ product.data.name }}  --  Ubah Jumlah Rusak</h6>
+    </div>
+    <q-separator/>
+    <q-card-section>
+      <q-form ref="form">
+        <q-input
+          v-model="payload.defect"
+          type="number"
+          :min="0"
+          :max="maxDefect"
+          label="Jumlah Rusak"
         />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
+      </q-form>
+    </q-card-section>
+    <q-separator/>
+    <q-card-actions align="center">
+      <q-btn 
+        @click="onSubmit"
+        :loading="updateResult.type == 'loading'"
+        outline 
+        color="primary"
+        label="submit"
+      />
+    </q-card-actions>
+  </q-card>
 </template>
 
 <script lang="ts">
@@ -63,13 +59,6 @@ export default defineComponent({
   emits: ['done'],
   setup(props, { emit }) {
     const $id = toRef(props, 'id')
-
-    const showState = computed({
-      get: () => !!unref($id),
-      set: (v: boolean) => {
-        emit('done')
-      }
-    })
 
     const payload = reactive({
       defect: 0
@@ -130,10 +119,12 @@ export default defineComponent({
       }
       const id = unref($id)
       updateStockItem(`/v1/api/stock-items/${id}/defect`, payload)
+        .then(() => {
+          emit('done')
+        })
     }
 
     return {
-      showState,
       product: $product,
       payload,
       maxDefect,

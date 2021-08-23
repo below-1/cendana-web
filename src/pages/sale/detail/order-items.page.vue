@@ -12,28 +12,21 @@
         />
       </q-toolbar>
       <q-separator/>
-      <stock-item-table
+      <order-item-table
+        v-if="orderItems.type == 'data'"
         :open="open"
-        :stockItems="stockItems.items"
+        :orderItems="orderItems.items"
       />
-      <section class="q-px-lg">
-        <q-toolbar class="text-grey-8 q-py-lg">
-          <pagination
-            v-model:page="params.page"
-            v-model:per-page="params.perPage"
-            :total-page="stockItems.totalPage"
-          />
-        </q-toolbar>
-      </section>
     </q-card>
 
     <q-dialog v-model="showAddDialog">
-      <stock-item-add 
+      <order-item-add 
         @item-added="onItemAdded"
         :order-id="orderId"
         style="width: 500px;"
       />
     </q-dialog>
+
   </div>
 </template>
 
@@ -52,8 +45,8 @@ import {
 } from 'src/compose/entity'
 
 import Pagination from 'components/pagination.vue'
-import StockItemTable from './stock-item-table.vue'
-import StockItemAdd from './stock-item-add.vue'
+import OrderItemTable from './order-item-table.vue'
+import OrderItemAdd from './order-item-add.vue'
 
 export default defineComponent({
   props: {
@@ -67,20 +60,20 @@ export default defineComponent({
     }
   },
   components: {
-    StockItemTable,
-    StockItemAdd,
     Pagination,
+    OrderItemTable,
+    OrderItemAdd,
   },
   emits: ['item-added'],
   setup(props, { emit }) {
     const orderId = toRef(props, 'orderId')
     const {
       params,
-      getEntities: getStockItems,
-      result: stockItems,
+      getEntities: getOrderItems,
+      result: orderItems,
     } = useFilterEntity({
-      url: '/v1/api/stock-items',
-      name: 'Item Pembelian',
+      url: '/v1/api/order-items',
+      name: 'Item Penjualan',
       initialParams: {
         target: 0,
         type: 'ORDER'
@@ -94,13 +87,14 @@ export default defineComponent({
     const showAddDialog = ref(false)
 
     function onItemAdded() {
+      showAddDialog.value = false
       emit('item-added')
-      getStockItems()
+      getOrderItems()
     }
 
     return {
       foo: 'bar',
-      stockItems,
+      orderItems,
       params,
       showAddDialog,
       onItemAdded,

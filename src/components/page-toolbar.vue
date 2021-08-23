@@ -1,6 +1,6 @@
 <template>
   <q-toolbar class="bg-grey-2 q-px-lg">
-    <q-toolbar-title class="text-weight-bold text-h6 text-center">
+    <q-toolbar-title class="text-weight-bold text-h6">
       {{ title }}
     </q-toolbar-title>
     <slot></slot>

@@ -57,7 +57,7 @@ export default defineComponent({
 
     const displayName = computed(() => {
       const v: any = unref(modelValue)
-      return (v && v.name) ? v.name : ''
+      return (v && v.name) ? v.name : ' --- '
     })
 
     return {

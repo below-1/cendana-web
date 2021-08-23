@@ -63,10 +63,15 @@
 
     <loading-pane v-else />
 
-    <update-defect 
-      :id="selectedId" 
-      :product-id="id"
-    />
+    <q-dialog
+      v-model="showUpdateDefect"
+    >
+      <update-defect 
+        :id="selectedId" 
+        :product-id="id"
+        @done="onDoneUpdateDefect"
+      />
+    </q-dialog>
 
   </q-page>
 </template>
@@ -133,7 +138,14 @@ const columns = [
     name: 'available',
     align: 'left',
     field: 'available',
-    label: 'Baik',
+    label: 'Tersedia',
+    required: true
+  },
+  {
+    name: 'sold',
+    align: 'left',
+    field: 'sold',
+    label: 'Terjual',
     required: true
   },
   {
@@ -196,6 +208,12 @@ export default defineComponent({
     const selectedId = ref(0)
     const onUpdateDefect = (id: number) => {
       selectedId.value = id
+      showUpdateDefect.value = true
+    }
+    const showUpdateDefect = ref(false)
+    function onDoneUpdateDefect() {
+      showUpdateDefect.value = false
+      getPurchases()
     }
 
     return {
@@ -204,7 +222,9 @@ export default defineComponent({
       params,
       purchases,
       columns,
-      onUpdateDefect
+      onUpdateDefect,
+      showUpdateDefect,
+      onDoneUpdateDefect
     }
   }
 })

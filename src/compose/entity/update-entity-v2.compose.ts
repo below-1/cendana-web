@@ -61,6 +61,7 @@ export function useUpdateEntityV2(options: UpdateOptions) {
         message: `${SUCCESS_MESSAGE} ${options.entityName}`,
         closeBtn: true
       })
+      return data
     } catch (err) {
       console.log(err);
       $q.notify({

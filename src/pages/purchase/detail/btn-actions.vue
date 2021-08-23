@@ -1,19 +1,18 @@
 <template>
   <q-btn
     v-if="open"
-    :to="sealUrl"
+    @click="$emit('show-seal')"
     label="Kunci Pembelian" 
-    color="blue" 
     outline
     class="q-mr-md"
   />
   <q-btn 
     v-if="open"
-    :to="updateUrl"
+    @click="$emit('show-update')"
     label="edit data pembelian"
     outline
     icon="edit" 
-    color="teal" />
+  />
 </template>
 
 <script lang="ts">
@@ -32,14 +31,6 @@ export default defineComponent({
   props: {
     open: {
       type: Boolean as PropType<boolean>,
-      required: true
-    },
-    sealUrl: {
-      type: String as PropType<string>,
-      required: true
-    },
-    updateUrl: {
-      type: String as PropType<string>,
       required: true
     }
   }

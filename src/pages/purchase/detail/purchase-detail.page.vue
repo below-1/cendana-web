@@ -1,19 +1,11 @@
 <template>
   <q-page>
     <page-toolbar :title="`Detail Pembelian #${orderId}`">
-      <q-btn
-        v-if="open"
-        @click="showSealDialog = true"
-        label="kunci pembelian" 
-        outline
-        class="q-mr-md"
+      <btn-actions
+        :open="open"
+        @show-seal="showSealDialog = true"
+        @show-update="showUpdateDialog = true"
       />
-      <q-btn 
-        v-if="open"
-        @click="showUpdateDialog = true"
-        label="edit data pembelian"
-        outline
-        icon="edit" />
     </page-toolbar>
 
     <div class="q-pa-md">
@@ -32,7 +24,10 @@
             />
           </q-card>
         </div>
-        <div class="col-12 col-md-4">
+        <div 
+          class="col-12 col-md-4"
+          v-if="purchase.item.transaction"
+        >
           <q-card flat bordered>
             <q-toolbar class="bg-grey-2">
               <div class="text-subtitle1 text-weight-bold">Informasi Transaksi</div>

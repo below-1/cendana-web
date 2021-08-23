@@ -7,6 +7,15 @@
       </q-toolbar-title>
       <q-btn flat color="primary" label="tambah" icon="add" :to="CREATE_URL" />
     </q-toolbar>
+    <q-separator/>
+
+    <div class="q-px-lg flex q-py-md">
+      <q-input dense placeholder="keyword..." v-model="params.keyword" class="q-mr-md" />
+      <month-select 
+        v-model:year="params.year"
+        v-model:month="params.month"
+      />
+    </div>
 
     <loading-pane v-if="showLoading" />
 
@@ -77,10 +86,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from 'vue';
-import { useListEntity, useRemoveEntity } from 'src/compose/entity';
+import { defineComponent, computed, onMounted } from 'vue';
+import { useFilterEntity, useListEntity, useRemoveEntity } from 'src/compose/entity';
 import LoadingPane from 'components/loading-pane.vue';
 import OrderStatusChip from 'components/order/order-status-chip.vue'
+import MonthSelect from 'components/month-select.vue'
 import {
   ENTITY_NAME,
   BASE_APP_URL,
@@ -91,6 +101,7 @@ import {
 export default defineComponent({
   components: {
     LoadingPane,
+    MonthSelect,
     OrderStatusChip,
   },
   setup() {
@@ -100,13 +111,19 @@ export default defineComponent({
       return BASE_APP_URL + `/${id}/update`;
     }
 
+    const initialParams = {
+      year: 2020,
+      month: 1,
+      keyword: ''
+    }
     const {
       params,
       result: listResult,
-      getEntityList,
-    } = useListEntity({ 
+      getEntities,
+    } = useFilterEntity({ 
       name: ENTITY_NAME,
-      url: BASE_API_URL 
+      url: BASE_API_URL,
+      initialParams
     });
 
     const {
@@ -116,10 +133,12 @@ export default defineComponent({
 
     const onRemove = (item: any) => {
       promptRemove(`${BASE_API_URL}/${item.id}`, item.title)
-        .then(() => getEntityList());
+        .then(() => getEntities());
     }
 
     const showLoading = computed(() => listResult.value.type == 'loading' || removeResult.value.type == 'loading');
+
+    onMounted(getEntities)
 
     return {
       COLUMNS,

@@ -3,6 +3,14 @@ import { RouteRecordRaw } from 'vue-router';
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
+    component: () => import('layouts/landing.layout.vue'),
+    children: [
+      { path: 'login', component: () => import('pages/auth/login.page.vue') },
+      { path: 'register', component: () => import('pages/auth/register.page.vue') }
+    ],
+  },
+  {
+    path: '/auth',
     component: () => import('layouts/auth.layout.vue'),
     children: [
       { path: 'login', component: () => import('pages/auth/login.page.vue') },
@@ -75,8 +83,8 @@ const routes: RouteRecordRaw[] = [
       { path: 'sale', component: () => import('pages/sale/sale-list.page.vue') },
       { path: 'sale/create', component: () => import('pages/sale/sale-create.page.vue') },
       { 
-        path: 'sale/:id/detail', 
-        component: () => import('pages/sale/sale-detail.page.vue'), 
+        path: 'sale/:orderId/detail', 
+        component: () => import('pages/sale/detail/sale-detail.page.vue'), 
         props: true,
         children: [
           { path: 'items/:saleItemId', component: () => import('components/sale/update-sale-item.vue'), props: true },
