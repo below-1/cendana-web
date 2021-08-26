@@ -3,7 +3,7 @@
   <q-select dense 
     v-model.number="monthState"
     :options="monthOptions"
-    :display-value="`${months[monthState - 1]}`"
+    :display-value="displayMonth"
     emit-value
     label="Bulan" 
     class="q-mr-md"
@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from 'vue'
+import { defineComponent, PropType, computed } from 'vue'
 import { useModel } from 'src/compose/commons'
 
 const months = [
@@ -30,7 +30,7 @@ const months = [
   'desember'
 ]
 const monthOptions = months.map((name: string, i: number) => ({
-  value: i + 1,
+  value: i,
   label: name
 }))
 
@@ -49,12 +49,19 @@ export default defineComponent({
   setup(props, { emit }) {
     const yearState = useModel<number>(props, 'year')
     const monthState = useModel<number>(props, 'month')
+    const displayMonth = computed(() => {
+      const month = props.month
+      const name = months[month]
+      console.log(`month index = ${month}, and it's name = ${name}`)
+      return name
+    })
 
     return {
       yearState,
       monthState,
       monthOptions,
-      months
+      months,
+      displayMonth
     }
   }
 })

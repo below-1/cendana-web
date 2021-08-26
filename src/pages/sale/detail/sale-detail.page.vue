@@ -2,6 +2,7 @@
   <q-page>
     <page-toolbar :title="`Detail Penjualan #${orderId}`">
       <btn-actions
+        v-if="open"
         @show-seal="showSealDialog = true"
         @show-update="showUpdateDialog = true"
       />

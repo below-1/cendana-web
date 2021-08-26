@@ -97,6 +97,7 @@ import {
   BASE_API_URL,
   COLUMNS
 } from 'src/data/purchase';
+import { currentYearMonth } from 'src/serv/datetime'
 
 export default defineComponent({
   components: {
@@ -110,10 +111,14 @@ export default defineComponent({
     function generateUpdateURL(id: number) {
       return BASE_APP_URL + `/${id}/update`;
     }
+    const {
+      year,
+      month
+    } = currentYearMonth()
 
     const initialParams = {
-      year: 2020,
-      month: 1,
+      year,
+      month,
       keyword: ''
     }
     const {

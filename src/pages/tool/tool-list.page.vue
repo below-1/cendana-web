@@ -5,14 +5,6 @@
       <q-toolbar-title class="text-weight-bold">
         Data Biaya Peralatan
       </q-toolbar-title>
-      <q-input
-        placeholder="keyword..."
-        v-model="params.keyword"
-        hide-hint
-        outlined
-        dense
-        class="q-mr-md"
-      />
       <q-btn 
         to="/app/tool/create" 
         flat 
@@ -21,6 +13,13 @@
         icon="add" />
     </q-toolbar>
     <q-separator/>
+    <div class="q-px-lg flex q-py-md">
+      <q-input dense placeholder="keyword..." v-model="params.keyword" class="q-mr-md" />
+      <month-select 
+        v-model:year="params.year"
+        v-model:month="params.month"
+      />
+    </div>
     <loading-pane v-if="tools.type == 'loading'" />
     <template v-else-if="tools.type == 'data'">
       <section>
@@ -68,6 +67,7 @@ import LoadingPane from 'components/loading-pane.vue'
 import Pagination from 'components/pagination.vue'
 import { useFilterEntity } from 'src/compose/entity'
 import { COLUMNS } from 'src/data/tool'
+import { currentYearMonth } from 'src/serv/datetime'
 
 export default defineComponent({
   components: {
@@ -77,18 +77,24 @@ export default defineComponent({
   },
   setup() {
     const {
+      year,
+      month
+    } = currentYearMonth()
+
+    const initialParams = {
+      year,
+      month,
+      keyword: '',
+      type: 'TOOL'
+    }
+    const {
       params,
       result: tools,
       getEntities: getTools
     } = useFilterEntity({
       name: 'Biaya Peralatan',
       url: '/v1/api/transactions',
-      initialParams: {
-        year: 2021,
-        month: 8,
-        keyword: '',
-        type: 'TOOL'
-      }
+      initialParams
     })
 
     onMounted(() => {

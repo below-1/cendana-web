@@ -1,14 +1,16 @@
 <template>
   <div style="display: flex; justify-content: center;">
     <q-btn
+      v-if="open"
       @click="$emit('show-seal')"
-      label="Transaksi" 
+      label="kunci transaksi" 
       outline
       class="q-mr-md"
     />
     <q-btn 
+      v-if="open"
       @click="$emit('show-update')"
-      label="Edit"
+      label="edit data penjualan"
       outline
       icon="edit" 
     />
@@ -28,6 +30,12 @@ import {
 } from 'vue'
 
 export default defineComponent({
-  emits: ['show-update', 'show-seal']
+  emits: ['show-update', 'show-seal'],
+  props: {
+    open: {
+      type: Boolean as PropType<boolean>,
+      required: true
+    }
+  }
 })
 </script>

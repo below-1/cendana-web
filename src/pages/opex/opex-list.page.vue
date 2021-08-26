@@ -5,14 +5,6 @@
       <q-toolbar-title class="text-weight-bold">
         Data Beban Usaha
       </q-toolbar-title>
-      <q-input
-        placeholder="keyword..."
-        v-model="params.keyword"
-        hide-hint
-        outlined
-        dense
-        class="q-mr-md"
-      />
       <q-btn 
         to="/app/opex/create" 
         flat 
@@ -21,6 +13,14 @@
         icon="add" />
     </q-toolbar>
     <q-separator/>
+    <div class="q-px-lg flex q-py-md">
+      <q-input dense placeholder="keyword..." v-model="params.keyword" class="q-mr-md" />
+      <month-select 
+        v-model:year="params.year"
+        v-model:month="params.month"
+      />
+    </div>
+
     <loading-pane v-if="opexes.type == 'loading'" />
     <template v-else-if="opexes.type == 'data'">
       <section>
@@ -68,6 +68,7 @@ import LoadingPane from 'components/loading-pane.vue'
 import Pagination from 'components/pagination.vue'
 import { useFilterEntity } from 'src/compose/entity'
 import { COLUMNS } from 'src/data/opex'
+import { currentYearMonth } from 'src/serv/datetime'
 
 export default defineComponent({
   components: {
@@ -77,18 +78,24 @@ export default defineComponent({
   },
   setup() {
     const {
+      year,
+      month
+    } = currentYearMonth()
+
+    const initialParams = {
+      year,
+      month,
+      keyword: '',
+      type: 'OPEX'
+    }
+    const {
       params,
       result: opexes,
       getEntities: getOpexes
     } = useFilterEntity({
       name: 'Beban Usaha',
       url: '/v1/api/transactions',
-      initialParams: {
-        year: 2021,
-        month: 8,
-        keyword: '',
-        type: 'OPEX'
-      }
+      initialParams
     })
 
     onMounted(() => {

@@ -18,6 +18,14 @@
     </q-item>
     <q-item>
       <q-item-section>
+        Waktu
+      </q-item-section>
+      <q-item-section>
+        {{ displayDateTime(purchase.createdAt) }}
+      </q-item-section>
+    </q-item>
+    <q-item>
+      <q-item-section>
         Status Pembelian
       </q-item-section>
       <q-item-section>
@@ -70,6 +78,7 @@ import {
   Ref
 } from 'vue'
 import { rupiah } from 'src/serv/currency'
+import { displayDateTime } from 'src/serv/datetime'
 import OrderStatusChip from 'components/order/order-status-chip.vue'
 
 export default defineComponent({
@@ -85,7 +94,8 @@ export default defineComponent({
   emits: ['update'],
   setup(props, { emit }) {
     return {
-      rupiah
+      rupiah,
+      displayDateTime
     }
   }
 })
