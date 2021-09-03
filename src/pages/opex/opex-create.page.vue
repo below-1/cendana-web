@@ -46,6 +46,12 @@
                 label="Waktu Transaksi"
                 v-model="payload.createdAt"
               />
+              <q-input
+                label="Keterangan"
+                type="textarea"
+                v-model="payload.description"
+                class="q-mb-md"
+              />
             </q-form>
           </q-card-section>
           <q-separator/>
@@ -87,6 +93,7 @@ import {
 import OcatOptions from 'components/ocat/ocat-options.vue'
 import RupiahInput from 'components/rupiah-input.vue'
 import DatetimeInput from 'components/datetime-input.vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   components: {
@@ -101,7 +108,8 @@ export default defineComponent({
       nominal: '0',
       status: 'SUCCESS',
       paymentMethod: 'ONLINE',
-      createdAt: defaultDateTime()
+      createdAt: defaultDateTime(),
+      description: ''
     })
     const selectedStatus = computed(() => {
       const selected = TRANSACTION_STATUS_OPTIONS.find((it: any) => it.value == payload.status)
@@ -129,6 +137,7 @@ export default defineComponent({
       }
     })
 
+    const router = useRouter()
     const form = ref<any>(null)
     const onSubmit = async () => {
       const formElement = form.value
@@ -139,7 +148,8 @@ export default defineComponent({
       if (!isValid) {
         return
       }
-      createEntity('/v1/api/opex-trans', payload)
+      await createEntity('/v1/api/opex-trans', payload)
+      router.back()
     }
 
     return {

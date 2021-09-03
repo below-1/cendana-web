@@ -40,8 +40,8 @@ const columns = [
     name: 'nominal',
     align: 'left',
     field: 'nominal',
-    format: rupiah,
-    label: 'Mominal',
+    format: (s: any) => 'IDR ' + rupiah(s),
+    label: 'Nominal',
     required: true,
   },
   {

@@ -86,6 +86,7 @@ import {
 } from 'src/data/transaction'
 import TcatOptions from 'components/tcat/tcat-options.vue'
 import RupiahInput from 'components/rupiah-input.vue'
+import { useRouter } from 'vue-router'
 import DatetimeInput from 'components/datetime-input.vue'
 
 export default defineComponent({
@@ -129,6 +130,7 @@ export default defineComponent({
       }
     })
 
+    const router = useRouter()
     const form = ref<any>(null)
     const onSubmit = async () => {
       const formElement = form.value
@@ -139,7 +141,8 @@ export default defineComponent({
       if (!isValid) {
         return
       }
-      createEntity('/v1/api/tool-trans', payload)
+      const result = await createEntity('/v1/api/tool-trans', payload)
+      router.back()
     }
 
     return {

@@ -4,7 +4,7 @@
     :model-value="displayed"
     @keyup="onKeyUp"
     :label="label"
-    :rules="rules"
+    :rules="transformedRules"
     :readonly="readonly"
     prefix="Rp, "
   />
@@ -21,6 +21,12 @@ import {
   Ref
 } from 'vue';
 import Decimal from 'decimal.js'
+
+function replaceAll(s: string, target: string, replacement: string) {
+  const re = new RegExp(target, 'g')
+  const result = s.replace(re, replacement)
+  return result
+}
 
 export default defineComponent({
   props: {
@@ -64,13 +70,19 @@ export default defineComponent({
       return result
     })
 
+    const transformedRules = props.rules.map(f => {
+      return (v: any) => {
+        const parsedV = v.replaceAll('.', '')
+        return f(parsedV)
+      }
+    })
+
     function onKeyUp(event: any) {
       const s = event.target.value
-      const v = s.replaceAll('.', '').replace(',', '.')
+      const v = s.replaceAll('.', '').replaceAll(',', '.')
       try {
         const d = new Decimal(v)
         const result = d.toString()
-        console.log(`result = ${result}`)
         emit('update:modelValue', d.toString())
       } catch (err) {
       }
@@ -78,7 +90,8 @@ export default defineComponent({
 
     return {
       onKeyUp,
-      displayed
+      displayed,
+      transformedRules
     }
   }
 })

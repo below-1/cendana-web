@@ -57,6 +57,7 @@
         <div class="col-12">
           <stock-items 
             @item-added="getPurchase"
+            @item-deleted="getPurchase"
             :order-id="orderId"
             :open="open"
           />

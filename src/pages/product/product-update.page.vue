@@ -20,6 +20,10 @@
                 v-model="payload.unit"
                 class="q-mb-md"
                 outlined />
+              <rupiah-input
+                label="Harga Jual"
+                v-model="payload.sellPrice"
+              />
               <options-product-category 
                 v-model="payload.categories"/>
             </q-form>
@@ -59,6 +63,8 @@ import {
 } from 'src/compose/entity'
 import { useFindProductCategories } from 'src/compose/pcat'
 import OptionsProductCategory from 'components/pcat/options-product-category.vue'
+import RupiahInput from 'components/rupiah-input.vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   props: {
@@ -68,7 +74,8 @@ export default defineComponent({
     }
   },
   components: {
-    OptionsProductCategory
+    OptionsProductCategory,
+    RupiahInput
   },
   setup(props) {
     const { id } = toRefs(props)
@@ -111,6 +118,7 @@ export default defineComponent({
       updateEntity
     } = useUpdateEntity('Produk')
 
+    const router = useRouter()
     const form: Ref<any> = ref(null)
     const onSubmit = async () => {
       const formEl = form.value
@@ -122,7 +130,8 @@ export default defineComponent({
         return
       }
       const url = `/v1/api/products/${id.value}`
-      updateEntity(url, { ...payload })
+      await updateEntity(url, { ...payload })
+      router.back()
     }
 
     return {

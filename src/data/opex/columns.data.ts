@@ -37,6 +37,13 @@ export const COLUMNS = [
     required: true,
   },
   {
+    name: 'description',
+    align: 'left',
+    field: 'description',
+    label: 'Keterangan',
+    required: true,
+  },
+  {
     name: 'actions',
     align: 'right',
     field: 'id',

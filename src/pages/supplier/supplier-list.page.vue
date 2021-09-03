@@ -38,10 +38,9 @@
       <q-toolbar class="text-grey-8 q-py-lg">
         <q-select
           :options="[10, 25, 50]"
-          v-model.number="params.per_page"
+          v-model.number="params.perPage"
           label="jumlah item per halaman"
           dense
-          outlined
           class="q-mr-lg"
           style="min-width: 200px;"/>
         <q-input

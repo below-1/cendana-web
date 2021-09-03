@@ -22,6 +22,7 @@
         <q-btn
           v-if="open"
           icon="delete"
+          @click="$emit('delete', props.row.id)"
           color="red"
           flat 
           size="sm"
@@ -49,7 +50,7 @@ export default defineComponent({
       required: true
     }
   },
-  emits: ['update', 'delete', 'deleted'],
+  emits: ['update', 'delete', 'deleted', 'item-added'],
   setup(props, { emit }) {
     return { 
       columns: COLUMNS

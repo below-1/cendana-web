@@ -27,7 +27,7 @@
                 </q-item-label>
               </q-item-section>
             </q-item>
-            <q-item>
+            <q-item @click="logout" clickable>
               <q-item-section avatar>
                 <q-icon name="power_settings_new" />
               </q-item-section>
@@ -64,6 +64,7 @@
 import { defineComponent, ref, inject } from 'vue';
 import { User } from 'src/models/user.model';
 import { baseMenus, adminMenus } from 'src/data/commons/menu.data';
+import { useRouter } from 'vue-router'
 import * as appData from 'src/data/commons/app.data';
 import AppMenu from 'components/app-menu.vue';
 
@@ -78,6 +79,12 @@ export default defineComponent({
     const leftDrawerOpen = ref(false);
     const leftDrawerMini = ref(false);
     const user = inject<User>('user');
+    const router = useRouter()
+
+    function logout() {
+      localStorage.removeItem('token')
+      router.replace('/')
+    }
 
     return {
       leftDrawerOpen,
@@ -89,6 +96,7 @@ export default defineComponent({
       baseMenus,
       data: appData,
       user,
+      logout
     };
   },
 });

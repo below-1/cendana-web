@@ -53,6 +53,14 @@
                 <q-item-label>{{ rupiah(delay.data.total) }}</q-item-label>
               </q-item-section>
             </q-item>
+            <q-item>
+              <q-item-section>
+                <q-item-label>Status</q-item-label>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ open ? 'Belum Lunas' : 'Lunas' }}</q-item-label>
+              </q-item-section>
+            </q-item>
           </q-list>
         </q-card>
       </div>
@@ -67,6 +75,7 @@
           <q-toolbar class="bg-grey-2">
             <q-toolbar-title class="text-subtitle1">Daftar Pembayaran</q-toolbar-title>
             <q-btn
+              v-if="open"
               @click="showAddDialog = true"
               flat
               dark
@@ -90,6 +99,7 @@
         :id="id"
         style="width: 500px"
         :max="remainingPaid"
+        @payment-added="loadData"
       >
       </add-payment>
     </q-dialog>
@@ -143,11 +153,23 @@ export default defineComponent({
       entityName: 'Hutang',
       url
     })
+    const open = computed(() => {
+      const delay: any = unref($delay)
+      if (delay.type != 'result') {
+        return false
+      }
+      return !delay.data.complete
+    })
 
     const {
       payments: $payments,
       getPayments
     } = usePayments($id)
+
+    function loadData() {
+      getDelay()
+      getPayments()
+    }
 
     const remainingPaid = computed(() => {
       const defaultVal = new Decimal('0')
@@ -169,10 +191,7 @@ export default defineComponent({
       return total.sub(totalPaid).toString()
     })
 
-    onMounted(() => {
-      getDelay()
-      getPayments()
-    })
+    onMounted(loadData)
 
     const showAddDialog = ref(false)
 
@@ -182,7 +201,9 @@ export default defineComponent({
       rupiah,
       displayDateTime,
       showAddDialog,
-      remainingPaid
+      remainingPaid,
+      open,
+      loadData
     }
   }
 })

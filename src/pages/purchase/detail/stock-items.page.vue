@@ -13,6 +13,7 @@
       </q-toolbar>
       <q-separator/>
       <stock-item-table
+        @delete="onItemDelete"
         :open="open"
         :stockItems="stockItems.items"
       />
@@ -48,7 +49,8 @@ import {
   ref,
 } from 'vue'
 import {
-  useFilterEntity
+  useFilterEntity,
+  useRemoveEntity
 } from 'src/compose/entity'
 
 import Pagination from 'components/pagination.vue'
@@ -71,7 +73,7 @@ export default defineComponent({
     StockItemAdd,
     Pagination,
   },
-  emits: ['item-added'],
+  emits: ['item-added', 'item-deleted'],
   setup(props, { emit }) {
     const orderId = toRef(props, 'orderId')
     const {
@@ -87,6 +89,10 @@ export default defineComponent({
       }
     })
 
+    const {
+      promptRemove
+    } = useRemoveEntity('Item Penjualan')
+
     onMounted(() => {
       params.target = props.orderId
     })
@@ -98,12 +104,22 @@ export default defineComponent({
       getStockItems()
     }
 
+    function onItemDelete(id: any) {
+      console.log('id = ', id)
+      const url = `/v1/api/stock-items/${id}`
+      promptRemove(url, id)
+        .then(() => {
+          emit('item-deleted')
+        })
+    }
+
     return {
       foo: 'bar',
       stockItems,
       params,
       showAddDialog,
       onItemAdded,
+      onItemDelete
     }
   }
 })

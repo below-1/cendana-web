@@ -2,7 +2,7 @@
   <q-page>
     <page-toolbar :title="`Detail Penjualan #${orderId}`">
       <btn-actions
-        v-if="open"
+        :open="open"
         @show-seal="showSealDialog = true"
         @show-update="showUpdateDialog = true"
       />
@@ -131,6 +131,7 @@ export default defineComponent({
         return false
       }
       const result = sale.data.orderStatus == 'OPEN'
+      console.log('result = ', result)
       return result
     })
 

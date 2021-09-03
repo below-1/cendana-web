@@ -47,6 +47,7 @@ import CustomerSearchInput from 'components/customer/customer-search-input.vue'
 import { useCreateEntity } from 'src/compose/entity'
 import { BASE_API_URL, BASE_APP_URL } from 'src/data/sale'
 import { User } from 'src/models/user.model'
+import { useRouter } from 'vue-router'
 
 type Payload = {
   targetUser: null | User;
@@ -69,6 +70,7 @@ export default defineComponent({
 
     const user = inject<Ref<User>>('user')
 
+    const router = useRouter()
     const { result: createResult, createEntity: createSale } = useCreateEntity('Penjualan')
     const onSubmit = async () => {
       if (!user) {
@@ -95,7 +97,8 @@ export default defineComponent({
         authorId: user.value.id
       }
       const url = BASE_API_URL
-      createSale(url, realPayload)
+      const result = await createSale(url, realPayload)
+      router.push(`/app/sale/${result.id}/detail`)
     }
 
     return {

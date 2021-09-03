@@ -93,6 +93,7 @@ import {
 import TcatOptions from 'components/tcat/tcat-options.vue'
 import RupiahInput from 'components/rupiah-input.vue'
 import DatetimeInput from 'components/datetime-input.vue'
+import { useRouter } from 'vue-router'
 
 function getInitialData(id: string | number) {
   const { 
@@ -157,6 +158,7 @@ export default defineComponent({
       }
     })
 
+    const router = useRouter()
     const form = ref<any>(null)
     const onSubmit = async () => {
       const formElement = form.value
@@ -167,7 +169,8 @@ export default defineComponent({
       if (!isValid) {
         return
       }
-      updateEntity(`/v1/api/tool-trans/${props.id}`, payload)
+      await updateEntity(`/v1/api/tool-trans/${props.id}`, payload)
+      router.back()
     }
 
     return {
