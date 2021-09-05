@@ -58,6 +58,8 @@ const routes: RouteRecordRaw[] = [
       { path: 'staf/create', component: () => import('pages/staf/staf-create.page.vue') },
       { path: 'staf/:id/update', component: () => import('pages/staf/staf-update.page.vue'), props: true },
 
+      { path: 'admin', component: () => import('pages/admin/admin-list.page.vue') },
+
       { path: 'account', component: () => import('pages/account/account-list.page.vue') },
       // { path: 'customer/:id/update', component: () => import('pages/customer/customer-update.page.vue'), props: true },
       // { path: 'customer/create', component: () => import('pages/customer/customer-create.page.vue') },
