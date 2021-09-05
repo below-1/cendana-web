@@ -67,7 +67,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, Ref } from 'vue'
+import { 
+  defineComponent, 
+  reactive, 
+  ref, 
+  Ref,
+  computed
+} from 'vue'
 import { useCreateEntityV2 } from 'src/compose/entity'
 import { 
   ENTITY_NAME,
@@ -93,11 +99,12 @@ export default defineComponent({
     const form: Ref<any> = ref(null)
 
     const {
-      loading,
+      result: createResult,
       createEntity: createStaf
     } = useCreateEntityV2({
       entityName: 'Pegawai'
     })
+    const loading = computed(() => createResult.value.type == 'loading')
 
     const router = useRouter()
     const onSubmit = async () => {
@@ -113,7 +120,6 @@ export default defineComponent({
       } catch (err) {
         console.log(err)
       }
-
     }
 
     return {

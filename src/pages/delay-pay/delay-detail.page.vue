@@ -15,7 +15,7 @@
           <q-list separator>
             <q-item>
               <q-item-section>
-                <q-item-label>Pelanggan</q-item-label>
+                <q-item-label>Supplier</q-item-label>
               </q-item-section>
               <q-item-section>
                 <router-link

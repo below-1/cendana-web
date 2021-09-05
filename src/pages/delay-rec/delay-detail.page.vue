@@ -87,6 +87,7 @@
           <q-separator/>
           <payment-list
             :items="payments"
+            @remove="onRemovePayment"
           />
         </q-card>
       </div>
@@ -119,7 +120,8 @@ import {
 } from 'vue'
 import {
   useSingleEntityV2,
-  useFilterEntity
+  useFilterEntity,
+  useRemoveEntity
 } from 'src/compose/entity'
 import {
   rupiah
@@ -143,6 +145,7 @@ export default defineComponent({
       required: true
     }
   },
+  emits: ['remove'],
   setup(props) {
     const $id = toRef(props, 'id')
     const url = computed(() => `/v1/api/delays/${props.id}`)
@@ -191,9 +194,22 @@ export default defineComponent({
       return total.sub(totalPaid).toString()
     })
 
+    const showAddDialog = ref(false)
+
+    const {
+      result: removeResult,
+      promptRemove
+    } = useRemoveEntity('Pembayaran');
+
+    const onRemovePayment = (paymentId: any) => {
+      console.log(`paymentId`)
+      console.log(paymentId)
+      promptRemove(`/v1/api/delays/payments/${paymentId}`, paymentId)
+        .then(() => loadData())
+    }
+
     onMounted(loadData)
 
-    const showAddDialog = ref(false)
 
     return {
       delay: $delay,
@@ -203,7 +219,8 @@ export default defineComponent({
       showAddDialog,
       remainingPaid,
       open,
-      loadData
+      loadData,
+      onRemovePayment
     }
   }
 })

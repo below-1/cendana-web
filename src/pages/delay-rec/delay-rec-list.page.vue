@@ -25,6 +25,13 @@
           :rows-per-page-options="[0]"
           flat
         >
+          <template v-slot:body-cell-complete="props">
+            <q-td :props="props">
+              <delay-status-chip
+                :complete="props.row.complete"
+              />
+            </q-td>
+          </template>
           <template v-slot:body-cell-order="props">
             <q-td :props="props">
               <router-link
@@ -40,7 +47,7 @@
               <router-link
                 :to="`/app/customer/${props.row.order.targetUserId}/detail`"
               >
-                #{{ props.row.order.targetUser.name }}
+                {{ props.row.order.targetUser.name }}
               </router-link>
             </q-td>
           </template>
@@ -76,6 +83,7 @@ import { defineComponent, computed, onMounted } from 'vue'
 import MonthSelect from 'components/month-select.vue'
 import LoadingPane from 'components/loading-pane.vue'
 import Pagination from 'components/pagination.vue'
+import DelayStatusChip from 'components/delay/delay-status-chip.vue'
 import { useFilterEntity } from 'src/compose/entity'
 import { format } from 'date-fns'
 import { id as LocaleID } from 'date-fns/locale'
@@ -87,6 +95,13 @@ const columns = [
     align: 'left',
     field: 'id',
     label: 'id',
+    required: true,
+  },
+  {
+    name: 'complete',
+    align: 'left',
+    field: 'complete',
+    label: 'status',
     required: true,
   },
   {
@@ -145,7 +160,8 @@ export default defineComponent({
   components: {
     LoadingPane,
     Pagination,
-    MonthSelect
+    MonthSelect,
+    DelayStatusChip,
   },
   setup() {
     const {

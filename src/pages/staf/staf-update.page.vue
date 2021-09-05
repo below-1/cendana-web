@@ -55,7 +55,7 @@ import {
   Ref,
   PropType,
   computed,
-  onMounted
+  onMounted,
 } from 'vue'
 import { 
   useUpdateEntityV2,
@@ -94,11 +94,12 @@ export default defineComponent({
 
     const form: Ref<any> = ref(null)
     const {
-      loading,
+      result: updateResult,
       updateEntity: updateStaf
     } = useUpdateEntityV2({
       entityName: 'Pegawai'
     })
+    const loading = computed(() => updateResult.value.type == 'loading')
 
     const router = useRouter()
     const onSubmit = async () => {
@@ -114,7 +115,7 @@ export default defineComponent({
 
     onMounted(async () => {
       try {
-        const result = await getInitialData()
+        const result: any = await getInitialData()
         payload.name = result.name
         payload.username = result.username
       } catch (err) {

@@ -25,12 +25,19 @@
           :rows-per-page-options="[0]"
           flat
         >
+          <template v-slot:body-cell-complete="props">
+            <q-td :props="props">
+              <delay-status-chip
+                :complete="props.row.complete"
+              />
+            </q-td>
+          </template>
           <template v-slot:body-cell-order="props">
             <q-td :props="props">
               <router-link
                 :to="`/app/sale/${props.row.orderId}/detail`"
               >
-                #{{ props.row.orderId }}
+                {{ props.row.orderId }}
               </router-link>
             </q-td>
           </template>
@@ -48,6 +55,7 @@
           <template v-slot:body-cell-actions="props">
             <q-td :props="props">
               <q-btn
+                :to="`/app/delay-payable/${props.row.id}/detail`"
                 icon="more_horiz" 
                 color="primary" 
                 flat 
@@ -71,13 +79,15 @@
 
 <script lang="ts">
 import { defineComponent, computed, onMounted } from 'vue'
-import MonthSelect from 'components/month-select.vue'
-import LoadingPane from 'components/loading-pane.vue'
-import Pagination from 'components/pagination.vue'
 import { useFilterEntity } from 'src/compose/entity'
 import { format } from 'date-fns'
 import { id as LocaleID } from 'date-fns/locale'
 import { rupiah } from 'src/serv/currency'
+
+import MonthSelect from 'components/month-select.vue'
+import LoadingPane from 'components/loading-pane.vue'
+import Pagination from 'components/pagination.vue'
+import DelayStatusChip from 'components/delay/delay-status-chip.vue'
 
 const columns = [
   {
@@ -85,6 +95,13 @@ const columns = [
     align: 'left',
     field: 'id',
     label: 'id',
+    required: true,
+  },
+  {
+    name: 'complete',
+    align: 'left',
+    field: 'complete',
+    label: 'status',
     required: true,
   },
   {
@@ -143,7 +160,8 @@ export default defineComponent({
   components: {
     LoadingPane,
     Pagination,
-    MonthSelect
+    MonthSelect,
+    DelayStatusChip,
   },
   setup() {
     const {
