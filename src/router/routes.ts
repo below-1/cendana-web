@@ -44,6 +44,11 @@ const routes: RouteRecordRaw[] = [
       },
 
       { path: 'delay-payable', component: () => import('pages/delay-pay/delay-pay-list.page.vue') },
+      { 
+        path: 'delay-payable/:id/detail', 
+        component: () => import('pages/delay-pay/delay-detail.page.vue'),
+        props: true
+      },
 
       { path: 'tool', component: () => import('pages/tool/tool-list.page.vue') },
       { path: 'tool/create', component: () => import('pages/tool/tool-create.page.vue') },

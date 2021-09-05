@@ -6,6 +6,16 @@
     :rows-per-page-options="[0]"
     flat
   >
+    <template v-slot:body-cell-actions="props">
+      <q-td :props="props">
+        <q-btn
+          icon="delete"
+          color="red"
+          flat size="xs"
+          @click="$emit('remove', props.row.id)"
+        />
+      </q-td>
+    </template>
   </q-table>
 </template>
 
@@ -59,7 +69,8 @@ export default defineComponent({
       required: true
     }
   },
-  setup(props) {
+  emits: ['remove'],
+  setup(props, { emit }) {
     return {
       columns
     }
