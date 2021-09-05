@@ -41,6 +41,21 @@
           </q-card>
         </div>
 
+        <div 
+          v-if="sale.data.delay"
+          class="col-12 col-md-4" 
+        >
+          <q-card flat bordered>
+            <q-toolbar class="bg-grey-2">
+              <div class="text-subtitle1 text-weight-bold">Informasi Hutang</div>
+            </q-toolbar>
+            <q-separator/>
+            <delay-flash
+              :delay="sale.data.delay" 
+            />
+          </q-card>
+        </div>
+
       </div>
 
       <div class="row q-mb-xl">
@@ -94,6 +109,7 @@ import OrderItems from './order-items.page.vue'
 import SaleUpdate from './sale-update.vue'
 import OrderSeal from 'components/order/order-seal.vue'
 import TransactionFlash from 'components/transaction/transaction-flash.vue'
+import DelayFlash from 'components/delay/delay-flash.vue'
 import { useRoute } from 'vue-router'
 import { useSingleEntityV2 } from 'src/compose/entity'
 
@@ -106,6 +122,7 @@ export default defineComponent({
     SaleUpdate,
     OrderSeal,
     TransactionFlash,
+    DelayFlash,
   },
   props: {
     orderId: {
