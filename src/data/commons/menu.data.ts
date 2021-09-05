@@ -23,6 +23,7 @@ export const baseMenus: Menu[] = [
 
 export const adminMenus: Menu[] = [
   { separator: true, label: 'Lain - Lain' },
-  { path: '/app/accounts', label: 'akun', icon: 'person' },
+  { path: '/app/staf', label: 'staf', icon: 'person' },
+  { path: '/app/admin', label: 'admin', icon: 'person' },
   { path: '/app/financial-report', label: 'laporan keuangan', icon: 'bar_chart' },
 ];
