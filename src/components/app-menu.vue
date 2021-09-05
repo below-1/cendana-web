@@ -1,10 +1,15 @@
 <template>
+  <div class="q-px-md q-my-md text-center">
+    <h6 
+      class="text-weight-bolder q-my-none q-py-none" 
+      style="line-height: unset;">UD. Cendana</h6>
+  </div>
   <q-list separator>
     <template v-for="menu, i in menus" :key="`app_menu_${i}`">
       <q-item-label
         v-if="menu.separator"
         header
-        class="text-grey-8 text-capitalize"
+        class="text-capitalize"
       >
         {{ menu.label }}
       </q-item-label>

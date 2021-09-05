@@ -53,6 +53,7 @@
               :to="`/app/sale/${props.row.id}/detail`"
             />
             <q-btn
+              @click="onRemove(props.row)"
               icon="delete"
               color="red"
               flat 
@@ -81,7 +82,8 @@ import { ENTITY_NAME, BASE_APP_URL, BASE_API_URL, COLUMNS } from 'src/data/sale'
 import MonthSelect from 'components/month-select.vue'
 import LoadingPane from 'components/loading-pane.vue'
 import Pagination from 'components/pagination.vue'
-import { useFilterEntity } from 'src/compose/entity'
+import { useFilterEntity, useRemoveEntity } from 'src/compose/entity'
+import { currentYearMonth } from 'src/serv/datetime'
 
 export default defineComponent({
   components: {
@@ -90,9 +92,14 @@ export default defineComponent({
     Pagination,
   },
   setup() {
+    const {
+      year,
+      month
+    } = currentYearMonth()
+
     const initialParams = {
-      year: 2020,
-      month: 1,
+      year,
+      month,
       keyword: ''
     }
     const createURL = `${BASE_APP_URL}/create`
@@ -102,6 +109,15 @@ export default defineComponent({
       name: ENTITY_NAME
     })
 
+    const {
+      result: removeResult,
+      promptRemove
+    } = useRemoveEntity(ENTITY_NAME);
+    const onRemove = (item: any) => {
+      promptRemove(`${BASE_API_URL}/${item.id}`, item.id)
+        .then(() => getSales())
+    }
+
     onMounted(getSales)
 
     return {
@@ -109,7 +125,8 @@ export default defineComponent({
       sales,
       getSales,
       createURL,
-      COLUMNS
+      COLUMNS,
+      onRemove
     }
   }
 })

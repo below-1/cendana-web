@@ -21,6 +21,7 @@ const routes: RouteRecordRaw[] = [
     path: '/app',
     component: () => import('layouts/loader.layout.vue'),
     children: [
+      { path: 'change-password', component: () => import('pages/auth/change-password.page.vue') },
       { path: 'pcat', component: () => import('pages/pcat/pcat-list.page.vue') },
       { path: 'pcat/create', component: () => import('pages/pcat/pcat-create.page.vue') },
       { path: 'pcat/:id/update', component: () => import('pages/pcat/pcat-update.page.vue'), props: true },

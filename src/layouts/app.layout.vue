@@ -1,7 +1,7 @@
 <template>
-  <q-layout view="hHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
+  <q-layout view="lHh Lpr lFf">
+    <q-header>
+      <q-toolbar class="bg-white text-dark" style="border-bottom: 1px solid #eee;">
         <q-btn
           flat
           dense
@@ -9,15 +9,13 @@
           icon="menu"
           aria-label="Menu"
           @click="toggleLeftDrawer"
-        />
-
-        <q-toolbar-title>
-          {{ data.app.name }}
-        </q-toolbar-title>
+        />  
+        <div class="text-overline" style="line-height: unset;">12 April, 2021</div>
+        <q-space/>
 
         <q-btn-dropdown flat icon="person" :label="user.first_name">
           <q-list separator>
-            <q-item>
+            <q-item to="/app/change-password">
               <q-item-section avatar>
                 <q-icon name="vpn_key" />
               </q-item-section>
@@ -43,10 +41,10 @@
     </q-header>
 
     <q-drawer
-      :mini="leftDrawerMini"
-      dark
+      v-model="leftDrawerOpen"
       show-if-above
       bordered
+      dark
     >
       <AppMenu
         :baseMenus="baseMenus"
@@ -90,7 +88,7 @@ export default defineComponent({
       leftDrawerOpen,
       leftDrawerMini,
       toggleLeftDrawer() {
-        leftDrawerMini.value = !leftDrawerMini.value;
+        leftDrawerOpen.value = !leftDrawerOpen.value;
       },
       adminMenus,
       baseMenus,
