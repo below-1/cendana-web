@@ -45,6 +45,11 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
+      env: {
+        BASE_API: ctx.dev
+          ? 'http://localhost:5000'
+          : 'http://app-3ae5dde5-5bdc-4381-bcf9-89a2e9086dde.cleverapps.io'
+      },
 
       // transpile: false,
 
