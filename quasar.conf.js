@@ -46,7 +46,7 @@ module.exports = configure(function (ctx) {
     build: {
       vueRouterMode: 'hash', // available values: 'hash', 'history'
       env: {
-        BASE_API: ctx.dev
+        BASE_API_URL: ctx.dev
           ? 'http://localhost:5000'
           : 'http://app-3ae5dde5-5bdc-4381-bcf9-89a2e9086dde.cleverapps.io'
       },

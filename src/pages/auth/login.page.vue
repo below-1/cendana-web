@@ -76,10 +76,6 @@ export default defineComponent({
       return invalid;
     }
 
-    watch(payload, async () => {
-      formInvalid.value = await validateForm();
-    });
-
     const {
       loading,
       doLogin,

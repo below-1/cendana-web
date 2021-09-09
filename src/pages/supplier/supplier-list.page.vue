@@ -36,25 +36,11 @@
 
     <section class="q-px-lg">
       <q-toolbar class="text-grey-8 q-py-lg">
-        <q-select
-          :options="[10, 25, 50]"
-          v-model.number="params.perPage"
-          label="jumlah item per halaman"
-          dense
-          class="q-mr-lg"
-          style="min-width: 200px;"/>
-        <q-input
-          :model-value="params.page + 1"
-          @update:model-value="onPageChange"
-          :shadow-text="`/${listResult.totalPage}`"
-          :suffix="`/${listResult.totalPage}`"
-          type="number"
-          :max="listResult.totalPage - 1"
-          :min="1"
-          label="halaman"
-          dense
-          outlined
-          style="min-width: 100px;"/>
+        <pagination
+          v-model:page="params.page"
+          v-model:per-page="params.perPage"
+          :total-page="listResult.totalPage"
+        />
       </q-toolbar>
     </section>
 
@@ -65,6 +51,7 @@
 import { defineComponent, computed } from 'vue';
 import { useListEntity, useRemoveEntity } from 'src/compose/entity';
 import LoadingPane from 'components/loading-pane.vue';
+import Pagination from 'components/pagination.vue'
 import {
   ENTITY_NAME,
   BASE_APP_URL,
@@ -75,6 +62,7 @@ import {
 export default defineComponent({
   components: {
     LoadingPane,
+    Pagination,
   },
   setup() {
     const CREATE_URL = BASE_APP_URL + '/create';

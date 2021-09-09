@@ -47,7 +47,6 @@
 
         <q-btn
           :loading="loading"
-          :disabled="!formInvalid"
           unelevated
           dark
           color="blue-9"
@@ -83,10 +82,6 @@ export default defineComponent({
       const invalid: boolean = (await formRef.validate(true)) as unknown as boolean;
       return invalid;
     }
-
-    watch(payload, async () => {
-      formInvalid.value = await validateForm();
-    })
 
     const { register, loading } = useRegister()
 
